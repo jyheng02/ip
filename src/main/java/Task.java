@@ -1,9 +1,9 @@
 public class Task {
-    protected String dsecription;
+    protected String description;
     protected boolean isDone;
 
-    public Task(String dsecription) {
-        this.dsecription = dsecription;
+    public Task(String description) {
+        this.description = description;
         this.isDone = false;
     }
 
@@ -21,6 +21,6 @@ public class Task {
 
     @Override
     public String toString() {
-        return ("[" + getStatusIcon() + "] " + dsecription);
+        return ("[" + getStatusIcon() + "] " + description);
     }
 }

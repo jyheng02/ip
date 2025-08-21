@@ -95,7 +95,7 @@ public class Yin {
     private static void handleDeadline(String input) {
         // expected format: deadline <description> /by <when>
         String body = input.substring("deadline".length()).trim();
-        int separator =  body.indexOf("/by ");
+        int separator =  body.indexOf("/by");
         if (separator == -1) {
             printLine();
             System.out.println("    Deadline format: deadline <desc> /by <when>");
@@ -119,7 +119,7 @@ public class Yin {
         // expected format: event <description /from <start> /to <end>
         String body =  input.substring("event".length()).trim();
         int fromPosition = body.indexOf("/from");
-        int toPosition = body.indexOf("/to");
+        int toPosition = body.indexOf("/to", fromPosition + 5);
         if (fromPosition == -1 || toPosition == -1 || toPosition < fromPosition) {
             printLine();
             System.out.println("    Event format: event <desc> /from <start> /to <end>");
@@ -128,7 +128,7 @@ public class Yin {
         }
         String description = body.substring(0, fromPosition).trim();
         // skips "/from" and then "/to"
-        String from = body.substring(fromPosition + 5).trim();
+        String from = body.substring(fromPosition + 5, toPosition).trim();
         String to = body.substring(toPosition + 3).trim();
         if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
             printLine();
@@ -141,14 +141,6 @@ public class Yin {
 
     public static void main(String[] args) {
 
-
-        String logo = " ____        _        \n"
-                + "|  _ \\ _   _| | _____ \n"
-                + "| | | | | | | |/ / _ \\\n"
-                + "| |_| | |_| |   <  __/\n"
-                + "|____/ \\__,_|_|\\_\\___|\n";
-
-        System.out.println(logo);
         printGreeting();
 
         Scanner scan = new Scanner(System.in);
