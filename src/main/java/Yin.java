@@ -23,10 +23,12 @@ public class Yin {
 
     private static final ArrayList<Task> tasks = new ArrayList<>();
 
-    private static void addTask(String task) {
-        tasks.add(new Task(task));
+    private static void addTask(Task task) {
+        tasks.add(task);
         printLine();
-        System.out.println("    added: " + task);
+        System.out.println("    Got it. I've added this task:");
+        System.out.println("      " + task);
+        System.out.println("    Now you have " + tasks.size() + " tasks in the list.");
         printLine();
     }
 
@@ -76,6 +78,67 @@ public class Yin {
         printLine();
     }
 
+    // function to handle to do inputs
+    private static void handleTodo(String input) {
+        String description = input.substring("todo".length()).trim();
+        // if description empty give example input
+        if (description.isEmpty()) {
+            printLine();
+            System.out.println("    todo needs a description, e.g. \"todo borrow book\"");
+            printLine();
+            return;
+        }
+        addTask(new Todo(description));
+    }
+
+    // function to handle deadline inputs
+    private static void handleDeadline(String input) {
+        // expected format: deadline <description> /by <when>
+        String body = input.substring("deadline".length()).trim();
+        int separator =  body.indexOf("/by ");
+        if (separator == -1) {
+            printLine();
+            System.out.println("    Deadline format: deadline <desc> /by <when>");
+            printLine();
+            return;
+        }
+        String description = body.substring(0, separator).trim();
+        // separator + 3 to skip "/by"
+        String by = body.substring(separator + 3).trim();
+        if (description.isEmpty() || by.isEmpty()) {
+            printLine();
+            System.out.println("    Deadline format: deadline <desc> /by <when>");
+            printLine();
+            return;
+        }
+        addTask(new Deadline(description, by));
+    }
+
+    // function to handle events
+    private static void handleEvent(String input) {
+        // expected format: event <description /from <start> /to <end>
+        String body =  input.substring("event".length()).trim();
+        int fromPosition = body.indexOf("/from");
+        int toPosition = body.indexOf("/to");
+        if (fromPosition == -1 || toPosition == -1 || toPosition < fromPosition) {
+            printLine();
+            System.out.println("    Event format: event <desc> /from <start> /to <end>");
+            printLine();
+            return;
+        }
+        String description = body.substring(0, fromPosition).trim();
+        // skips "/from" and then "/to"
+        String from = body.substring(fromPosition + 5).trim();
+        String to = body.substring(toPosition + 3).trim();
+        if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
+            printLine();
+            System.out.println("    Event format: event <desc> /from <start> /to <end>");
+            printLine();
+            return;
+        }
+        addTask(new Event(description, from, to));
+    }
+
     public static void main(String[] args) {
 
 
@@ -96,10 +159,15 @@ public class Yin {
             if (input.equals("bye")) {
                 printExit();
                 break;
-            } else if (input.equals("list")) {
+            }
+            // command to list tasks
+            else if (input.equals("list")) {
                 printTasks();
-            } else if (input.startsWith("mark ")) {
+            }
+            // command to mark
+            else if (input.startsWith("mark ")) {
                 int index = parseIndex(input, "mark");
+                // invalid task index provided
                 if (index == -1) {
                     printLine();
                     System.out.println("    Invalid index to mark");
@@ -107,7 +175,9 @@ public class Yin {
                 } else {
                     doMark(index);
                 }
-            } else if (input.startsWith("unmark ")) {
+            }
+            // command to unmark
+            else if (input.startsWith("unmark ")) {
                 int index = parseIndex(input, "unmark");
                 if (index == -1) {
                     printLine();
@@ -116,8 +186,20 @@ public class Yin {
                 }  else {
                     doUnmark(index);
                 }
+            }
+            // command for todo
+            else if (input.startsWith("todo ")) {
+                handleTodo(input);
+            }
+            // command for deadline
+            else if (input.startsWith("deadline ")) {
+                handleDeadline(input);
+            }
+            // command for event
+            else if (input.startsWith("event ")) {
+                handleEvent(input);
             } else {
-                addTask(input);
+                addTask(new Todo(input));
             }
         }
     }
