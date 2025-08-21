@@ -1,5 +1,5 @@
+import java.util.ArrayList;
 import java.util.Scanner;
-
 public class Yin {
     private static final String INDENT = "  ";
     private static final String LINE = "____________________________________________________________";
@@ -14,14 +14,31 @@ public class Yin {
         printLine();
     }
 
-    public static void printExit() {
+    private static void printExit() {
         printLine();
         System.out.println("    I zao first. seeya");
         printLine();
     }
 
+    static ArrayList<String> tasks = new ArrayList<>();
+
+    private static void addTask(String task) {
+        tasks.add(task);
+        printLine();
+        System.out.println("    added: " + task);
+        printLine();
+    }
+
+    public static void printTasks() {
+        printLine();
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.println("    " + (i + 1) + "." + tasks.get(i));
+        }
+        printLine();
+    }
 
     public static void main(String[] args) {
+
 
         String logo = " ____        _        \n"
                 + "|  _ \\ _   _| | _____ \n"
@@ -33,15 +50,17 @@ public class Yin {
         printGreeting();
 
         Scanner scan = new Scanner(System.in);
+
         while (true) {
-            String input =  scan.nextLine();
+            String input = scan.nextLine();
+
             if (input.equals("bye")) {
                 printExit();
                 break;
+            } else if (input.equals("list")) {
+                printTasks();
             } else {
-                printLine();
-                System.out.println("    " + input);
-                printLine();
+                addTask(input);
             }
         }
     }
