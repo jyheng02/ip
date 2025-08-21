@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Yin {
     private static final String INDENT = "  ";
     private static final String LINE = "____________________________________________________________";
@@ -29,7 +31,18 @@ public class Yin {
 
         System.out.println(logo);
         printGreeting();
-        printExit();
 
+        Scanner scan = new Scanner(System.in);
+        while (true) {
+            String input =  scan.nextLine();
+            if (input.equals("bye")) {
+                printExit();
+                break;
+            } else {
+                printLine();
+                System.out.println("    " + input);
+                printLine();
+            }
+        }
     }
 }
