@@ -1,7 +1,21 @@
+
+
+todo
+deadline
+event
+mark
+unmark
+blah
 todo borrow book
 deadline return book /by Sunday
 event project meeting /from Mon 2pm /to 4pm
 list
 mark 2
+mark abc
+mark 9
 unmark 2
+deadline no-by
+event meeting /from Wed 1pm
+todo     buy   milk
+list
 bye
