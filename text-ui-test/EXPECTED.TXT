@@ -9,122 +9,108 @@
     input is empty >:(. Give me something please.
   ____________________________________________________________
   ____________________________________________________________
-    Give me a command first >:(. Try: todo, deadline, event, list, mark, unmark, or bye.
+    Give me a command first >:(. Try: todo, deadline, event, list, mark, unmark, delete or bye.
   ____________________________________________________________
   ____________________________________________________________
     Here are the tasks in your list:
+  ____________________________________________________________
+  ____________________________________________________________
+    list alone is enough!
   ____________________________________________________________
   ____________________________________________________________
     todo needs a description fam, I'm not bright enough to read minds, e.g. "todo borrow book"
   ____________________________________________________________
   ____________________________________________________________
+    Say less. I've added this task:
+      [T][ ] buy milk
+    Now you have 1 tasks in the list.
+  ____________________________________________________________
+  ____________________________________________________________
     Give me a proper input please...Deadline format: deadline <desc> /by <when>
+  ____________________________________________________________
+  ____________________________________________________________
+    Give me a proper input please...Deadline format: deadline <desc> /by <when>
+  ____________________________________________________________
+  ____________________________________________________________
+    Give me a proper input please...Deadline format: deadline <desc> /by <when>
+  ____________________________________________________________
+  ____________________________________________________________
+    Say less. I've added this task:
+      [D][ ] return book (by: Sunday 5pm)
+    Now you have 2 tasks in the list.
   ____________________________________________________________
   ____________________________________________________________
     Please feed me some proper input man... Event format: event <desc> /from <start> /to <end>
   ____________________________________________________________
   ____________________________________________________________
-    Give task number, e.g. "mark 2"
+    Please feed me a proper input man... Event format: event <desc> /from <start> /to <end>
   ____________________________________________________________
   ____________________________________________________________
-    Give task number, e.g. "unmark 2"
-  ____________________________________________________________
-  ____________________________________________________________
-    Give task number, e.g. "delete 2"
+    Please feed me a proper input man... Event format: event <desc> /from <start> /to <end>
   ____________________________________________________________
   ____________________________________________________________
     Say less. I've added this task:
-      [T][ ] borrow book
-    Now you have 1 tasks in the list.
-  ____________________________________________________________
-  ____________________________________________________________
-    Say less. I've added this task:
-      [D][ ] return book (by: Sunday)
-    Now you have 2 tasks in the list.
-  ____________________________________________________________
-  ____________________________________________________________
-    Say less. I've added this task:
-      [E][ ] project meeting (from: Mon 2pm to: 4pm)
+      [E][ ] team sync (from: Tue 9am to: 10am)
     Now you have 3 tasks in the list.
   ____________________________________________________________
   ____________________________________________________________
     Here are the tasks in your list:
-    1.[T][ ] borrow book
-    2.[D][ ] return book (by: Sunday)
-    3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+    1.[T][ ] buy milk
+    2.[D][ ] return book (by: Sunday 5pm)
+    3.[E][ ] team sync (from: Tue 9am to: 10am)
   ____________________________________________________________
   ____________________________________________________________
-    Task number must be integer! e.g. "mark"
+    Give task number, e.g. "mark 2"
   ____________________________________________________________
   ____________________________________________________________
-    Invalid index to mark
+    Task number must be integer! e.g. "mark 2"
   ____________________________________________________________
   ____________________________________________________________
     Invalid index to mark
   ____________________________________________________________
   ____________________________________________________________
     Solid, I've marked this task as done:
-      [D][X] return book (by: Sunday)
+      [D][X] return book (by: Sunday 5pm)
   ____________________________________________________________
   ____________________________________________________________
     Here are the tasks in your list:
-    1.[T][ ] borrow book
-    2.[D][X] return book (by: Sunday)
-    3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+    1.[T][ ] buy milk
+    2.[D][X] return book (by: Sunday 5pm)
+    3.[E][ ] team sync (from: Tue 9am to: 10am)
+  ____________________________________________________________
+  ____________________________________________________________
+    Give task number, e.g. "unmark 2"
+  ____________________________________________________________
+  ____________________________________________________________
+    Invalid index to unmark
   ____________________________________________________________
   ____________________________________________________________
     Skill issue, I've marked this task as not done yet:
-      [D][ ] return book (by: Sunday)
+      [D][ ] return book (by: Sunday 5pm)
   ____________________________________________________________
   ____________________________________________________________
-    Give me a proper input please...Deadline format: deadline <desc> /by <when>
+    Give task number, e.g. "delete 2"
   ____________________________________________________________
   ____________________________________________________________
-    Give me a proper input please...Deadline format: deadline <desc> /by <when>
-  ____________________________________________________________
-  ____________________________________________________________
-    Please feed me a proper input man... Event format: event <desc> /from <start> /to <end>
-  ____________________________________________________________
-  ____________________________________________________________
-    Please feed me a proper input man... Event format: event <desc> /from <start> /to <end>
-  ____________________________________________________________
-  ____________________________________________________________
-    Please feed me some proper input man... Event format: event <desc> /from <start> /to <end>
-  ____________________________________________________________
-  ____________________________________________________________
-    Please feed me some proper input man... Event format: event <desc> /from <start> /to <end>
-  ____________________________________________________________
-  ____________________________________________________________
-    Say less. I've added this task:
-      [T][ ] buy milk
-    Now you have 4 tasks in the list.
-  ____________________________________________________________
-  ____________________________________________________________
-    Here are the tasks in your list:
-    1.[T][ ] borrow book
-    2.[D][ ] return book (by: Sunday)
-    3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
-    4.[T][ ] buy milk
-  ____________________________________________________________
-  ____________________________________________________________
-    Task number must be integer! e.g. "delete"
-  ____________________________________________________________
-  ____________________________________________________________
-    Invalid index to delete
+    Task number must be integer! e.g. "delete 2"
   ____________________________________________________________
   ____________________________________________________________
     Invalid index to delete
   ____________________________________________________________
   ____________________________________________________________
     Say less. I've removed this task:
-      [E][ ] project meeting (from: Mon 2pm to: 4pm)
-    Now you have 3 tasks in the list.
+      [E][ ] team sync (from: Tue 9am to: 10am)
+    Now you have 2 tasks in the list.
   ____________________________________________________________
   ____________________________________________________________
     Here are the tasks in your list:
-    1.[T][ ] borrow book
-    2.[D][ ] return book (by: Sunday)
-    3.[T][ ] buy milk
+    1.[T][ ] buy milk
+    2.[D][ ] return book (by: Sunday 5pm)
+  ____________________________________________________________
+  ____________________________________________________________
+    Say less. I've removed this task:
+      [T][ ] buy milk
+    Now you have 1 tasks in the list.
   ____________________________________________________________
   ____________________________________________________________
     See you later alligator.
