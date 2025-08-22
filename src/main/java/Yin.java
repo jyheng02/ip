@@ -48,22 +48,37 @@ public class Yin {
         printLine();
     }
 
+    // function to delete tasks
+    private static void deleteTask(int index) {
+        Task removed = tasks.remove(index);
+        printLine();
+        System.out.println("    Say less. I've removed this task:");
+        System.out.println("      " + removed);
+        System.out.println("    Now you have " + tasks.size() + " tasks in the list.");
+        printLine();
+    }
+
+    // function to collapse whitespaces to a single space
+    private static String collapseSpaces(String string) {
+        return string.trim().replaceAll("\\s+", " ");
+    }
+
     // function to check if input is out of range within task list
-    private static int parseIndex(String input, String cmdWord) throws YinException {
-        String num = input.substring(cmdWord.length()).trim();
+    private static int parseIndex(String input, String commandWord) throws YinException {
+        String num = input.substring(commandWord.length()).trim();
         if (num.isEmpty()) {
-            throw new YinException("Give me task number, e.g. \"" + cmdWord + " 2\"");
+            throw new YinException("Give me task number, e.g. \"" + commandWord + " 2\"");
         }
         int index;
         try {
             // convert to 0 based index for task list
             index = Integer.parseInt(num) - 1;
         } catch (NumberFormatException e) {
-            throw new YinException("Task number must be integer! e.g. \"" + cmdWord + "\"");
+            throw new YinException("Task number must be integer! e.g. \"" + commandWord + "\"");
         }
             // check if out of range
             if (index < 0 || index >= tasks.size()) {
-                throw new YinException("Invalid index to " + cmdWord);
+                throw new YinException("Invalid index to " + commandWord);
             }
             return index;
     }
@@ -95,7 +110,7 @@ public class Yin {
         if (description.isEmpty()) {
             throw new YinException("todo needs a description fam, I'm not bright enough to read minds, e.g. \"todo borrow book\"");
         }
-        addTask(new Todo(description));
+        addTask(new Todo(collapseSpaces(description)));
     }
 
     // function to handle deadline inputs
@@ -112,12 +127,13 @@ public class Yin {
         if (description.isEmpty() || by.isEmpty()) {
             throw new YinException("Give me a proper input please...Deadline format: deadline <desc> /by <when>");
         }
-        addTask(new Deadline(description, by));
+        addTask(new Deadline(collapseSpaces(description), collapseSpaces(by)));
     }
 
     // function to handle events
     private static void handleEvent(String input) throws YinException {
         // expected format: event <description /from <start> /to <end>
+        // parsing index
         String body =  input.substring("event".length()).trim();
         int fromPosition = body.indexOf("/from");
         int toPosition = body.indexOf("/to", fromPosition + 5);
@@ -126,12 +142,13 @@ public class Yin {
         }
         String description = body.substring(0, fromPosition).trim();
         // skips "/from" and then "/to"
+        // parsing index
         String from = body.substring(fromPosition + 5, toPosition).trim();
         String to = body.substring(toPosition + 3).trim();
         if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
             throw new YinException("Please feed me some proper input man... Event format: event <desc> /from <start> /to <end>");
         }
-        addTask(new Event(description, from, to));
+        addTask(new Event(collapseSpaces(description), collapseSpaces(from), collapseSpaces(to)));
     }
 
     public static void main(String[] args) {
@@ -142,55 +159,63 @@ public class Yin {
 
         while (true) {
             String input = scan.nextLine();
-            String cmd = input.trim();
+            String command = input.trim();
 
             try {
                 // handle whitespace only input
-                if (cmd.isEmpty()) {
+                if (command.isEmpty()) {
                     throw new YinException("input is empty >:(. Give me something please.");
                 }
 
-                if (cmd.equals("bye")) {
+                if (command.equals("bye")) {
                     printExit();
                     break;
                 }
-                // command to list tasks
-                else if (cmd.equals("list")) {
+                // command to list task
+                else if (command.equals("list")) {
                     printTasks();
-                } else if (cmd.equals("todo")) {
+                }
+                // error handling for empty commands
+                else if (command.equals("todo")) {
                     throw new YinException("todo needs a description fam, I'm not bright enough to read minds, e.g. \"todo borrow book\"");
-                } else if (cmd.equals("deadline")) {
+                } else if (command.equals("deadline")) {
                     throw new YinException("Give me a proper input please...Deadline format: deadline <desc> /by <when>");
-                } else if (cmd.equals("event")) {
+                } else if (command.equals("event")) {
                     throw new YinException("Please feed me some proper input man... Event format: event <desc> /from <start> /to <end>");
-                } else if (cmd.equals("mark")) {
+                } else if (command.equals("mark")) {
                     throw new YinException("Give task number, e.g. \"mark 2\"");
-                } else if (cmd.equals("unmark")) {
+                } else if (command.equals("unmark")) {
                     throw new YinException("Give task number, e.g. \"unmark 2\"");
+                } else if (command.equals("delete")) {
+                    throw new YinException("Give task number, e.g. \"delete 2\"");
                 }
                 // command to mark
-                else if (cmd.startsWith("mark ")) {
-                    int index = parseIndex(cmd, "mark");
+                else if (command.startsWith("mark ")) {
+                    int index = parseIndex(command, "mark");
                     doMark(index);
                 }
                 // command to unmark
-                else if (cmd.startsWith("unmark ")) {
-                    int index = parseIndex(cmd, "unmark");
-                        doUnmark(index);
+                else if (command.startsWith("unmark ")) {
+                    int index = parseIndex(command, "unmark");
+                    doUnmark(index);
                 }
                 // command for todo
-                else if (cmd.startsWith("todo ")) {
-                    handleTodo(cmd);
+                else if (command.startsWith("todo ")) {
+                    handleTodo(command);
                 }
                 // command for deadline
-                else if (cmd.startsWith("deadline ")) {
-                    handleDeadline(cmd);
+                else if (command.startsWith("deadline ")) {
+                    handleDeadline(command);
                 }
                 // command for event
-                else if (cmd.startsWith("event ")) {
-                    handleEvent(cmd);
+                else if (command.startsWith("event ")) {
+                    handleEvent(command);
+                } 
+                else if (command.startsWith("delete ")) {
+                    int index = parseIndex(command, "delete");
+                    deleteTask(index);
                 } else {
-                    throw new YinException("Why are you spouting nonsense >:(. Try: todo, deadline, event, list, mark, unmark, or bye.");
+                    throw new YinException("Give me a command first >:(. Try: todo, deadline, event, list, mark, unmark, or bye.");
                 }
             } catch (YinException e) {
                 printError(e.getMessage());
