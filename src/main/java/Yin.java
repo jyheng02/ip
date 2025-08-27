@@ -108,7 +108,8 @@ public class Yin {
         String description = input.substring("todo".length()).trim();
         // if description empty give example input
         if (description.isEmpty()) {
-            throw new YinException("todo needs a description fam, I'm not bright enough to read minds, e.g. \"todo borrow book\"");
+            throw new YinException("todo needs a description fam, I'm not bright enough to read minds," +
+                    " e.g. \"todo borrow book\"");
         }
         addTask(new Todo(collapseSpaces(description)));
     }
@@ -119,13 +120,15 @@ public class Yin {
         String body = input.substring("deadline".length()).trim();
         int separator =  body.indexOf("/by");
         if (separator == -1) {
-            throw new YinException("Give me a proper input please...Deadline format: deadline <desc> /by <when>");
+            throw new YinException("Give me a proper input please..." +
+                    "Deadline format: deadline <desc> /by <when>");
         }
         String description = body.substring(0, separator).trim();
         // separator + 3 to skip "/by"
         String by = body.substring(separator + 3).trim();
         if (description.isEmpty() || by.isEmpty()) {
-            throw new YinException("Give me a proper input please...Deadline format: deadline <desc> /by <when>");
+            throw new YinException("Give me a proper input please..." +
+                    "Deadline format: deadline <desc> /by <when>");
         }
         addTask(new Deadline(collapseSpaces(description), collapseSpaces(by)));
     }
@@ -138,7 +141,8 @@ public class Yin {
         int fromPosition = body.indexOf("/from");
         int toPosition = body.indexOf("/to", fromPosition + 5);
         if (fromPosition == -1 || toPosition == -1 || toPosition < fromPosition + 5) {
-            throw new YinException("Please feed me a proper input man... Event format: event <desc> /from <start> /to <end>");
+            throw new YinException("Please feed me a proper input man..." +
+                    "Event format: event <desc> /from <start> /to <end>");
         }
         String description = body.substring(0, fromPosition).trim();
         // skips "/from" and then "/to"
@@ -170,63 +174,66 @@ public class Yin {
                 Command c = Command.getCommand(command);
 
                 switch (c) {
-                    case BYE:
-                        printExit();
-                        return;
+                case BYE:
+                    printExit();
+                    return;
 
-                    case LIST:
-                        if (!command.equals("list")) {
-                            throw new YinException("list alone is enough!");
-                        }
-                        printTasks();
-                        break;
+                case LIST:
+                    if (!command.equals("list")) {
+                        throw new YinException("list alone is enough!");
+                    }
+                    printTasks();
+                    break;
 
-                    case TODO:
-                        if (command.equals("todo")) {
-                            throw new YinException("todo needs a description fam, I'm not bright enough to read minds, e.g. \"todo borrow book\"");
-                        }
-                        handleTodo(command);
-                        break;
+                case TODO:
+                    if (command.equals("todo")) {
+                        throw new YinException("todo needs a description," +
+                                " I'm not bright enough to read minds, e.g. \"todo borrow book\"");
+                    }
+                    handleTodo(command);
+                    break;
 
-                    case DEADLINE:
-                        if (command.equals("deadline")) {
-                            throw new YinException("Give me a proper input please...Deadline format: deadline <desc> /by <when>");
-                        }
-                        handleDeadline(command);
-                        break;
+                case DEADLINE:
+                    if (command.equals("deadline")) {
+                        throw new YinException("Give me a proper input please..." +
+                                "Deadline format: deadline <desc> /by <when>");
+                    }
+                    handleDeadline(command);
+                    break;
 
-                    case EVENT:
-                        if (command.equals("event")) {
-                            throw new YinException("Please feed me some proper input man... Event format: event <desc> /from <start> /to <end>");
-                        }
-                        handleEvent(command);
-                        break;
+                case EVENT:
+                    if (command.equals("event")) {
+                        throw new YinException("Please feed me some proper input..." +
+                                " Event format: event <desc> /from <start> /to <end>");
+                    }
+                    handleEvent(command);
+                    break;
 
-                    case MARK:
-                        if (command.equals("mark")) {
-                            throw new YinException("Give task number, e.g. \"mark 2\"");
-                        }
-                        doMark(parseIndex(command, "mark"));
-                        break;
+                case MARK:
+                    if (command.equals("mark")) {
+                        throw new YinException("Give task number, e.g. \"mark 2\"");
+                    }
+                    doMark(parseIndex(command, "mark"));
+                    break;
 
-                    case UNMARK:
-                        if (command.equals("unmark")) {
-                            throw new YinException("Give task number, e.g. \"unmark 2\"");
-                        }
-                        doUnmark(parseIndex(command, "unmark"));
-                        break;
+                case UNMARK:
+                    if (command.equals("unmark")) {
+                        throw new YinException("Give task number, e.g. \"unmark 2\"");
+                    }
+                    doUnmark(parseIndex(command, "unmark"));
+                    break;
 
-                    case DELETE:
-                        if (command.equals("delete")) {
-                            throw new YinException("Give task number, e.g. \"delete 2\"");
-                        }
-                        deleteTask(parseIndex(command, "delete"));
-                        break;
+                case DELETE:
+                    if (command.equals("delete")) {
+                        throw new YinException("Give task number, e.g. \"delete 2\"");
+                    }
+                    deleteTask(parseIndex(command, "delete"));
+                    break;
 
-                    case UNKNOWN:
-                    default:
-                        throw new YinException("Give me a command first >:(." +
-                                " Try: todo, deadline, event, list, mark, unmark, delete or bye.");
+                case UNKNOWN:
+                default:
+                    throw new YinException("Give me a command first >:(." +
+                            " Try: todo, deadline, event, list, mark, unmark, delete or bye.");
                 }
             } catch (YinException e) {
                 printError(e.getMessage());
