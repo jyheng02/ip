@@ -2,63 +2,26 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Yin {
-    private static final String INDENT = "  ";
-    private static final String LINE =
-            "____________________________________________________________";
     private static final Storage storage = new Storage("data/Yin.txt");
+    private static final Ui ui = new Ui();
 
-    private static void printLine() {
-        System.out.println(INDENT + LINE);
-    }
-
-    private static void printGreeting() {
-        printLine();
-        System.out.println("    Hello! I'm Yin\n    How can I be of assistance?");
-        printLine();
-    }
-
-    private static void printExit() {
-        printLine();
-        System.out.println("    See you later alligator.");
-        printLine();
-    }
-
-    // error printer
-    private static void printError(String message) {
-        printLine();
-        System.out.println("    " + message);
-        printLine();
-    }
 
     private static final ArrayList<Task> tasks = new ArrayList<>();
 
     private static void addTask(Task task) {
         tasks.add(task);
-        printLine();
-        System.out.println("    Say less. I've added this task:");
-        System.out.println("      " + task);
-        System.out.println("    Now you have " + tasks.size() + " tasks in the list.");
-        printLine();
+        ui.showAdded(task, tasks.size());
         storage.save(tasks);
     }
 
     public static void printTasks() {
-        printLine();
-        System.out.println("    Here are the tasks in your list:");
-        for (int i = 0; i < tasks.size(); i++) {
-            System.out.println("    " + (i + 1) + "." + tasks.get(i));
-        }
-        printLine();
+        ui.showList(tasks);
     }
 
     // function to delete tasks
     private static void deleteTask(int index) {
         Task removed = tasks.remove(index);
-        printLine();
-        System.out.println("    Say less. I've removed this task:");
-        System.out.println("      " + removed);
-        System.out.println("    Now you have " + tasks.size() + " tasks in the list.");
-        printLine();
+        ui.showRemoved(removed, tasks.size());
         storage.save(tasks);
     }
 
@@ -91,10 +54,7 @@ public class Yin {
     private static void doMark(int index) {
         Task task = tasks.get(index);
         task.mark();
-        printLine();
-        System.out.println("    Solid, I've marked this task as done:");
-        System.out.println("      " + task);
-        printLine();
+        ui.showMarked(task);
         storage.save(tasks);
     }
 
@@ -102,10 +62,7 @@ public class Yin {
     private static void doUnmark(int index) {
         Task task = tasks.get(index);
         task.unmark();
-        printLine();
-        System.out.println("    Skill issue, I've marked this task as not done yet:");
-        System.out.println("      " + task);
-        printLine();
+        ui.showUnmarked(task);
         storage.save(tasks);
     }
 
@@ -180,7 +137,7 @@ public class Yin {
         tasks.clear();
         tasks.addAll(storage.load());
 
-        printGreeting();
+        ui.showWelcome();
 
         Scanner scan = new Scanner(System.in);
 
@@ -198,7 +155,7 @@ public class Yin {
 
                 switch (c) {
                 case BYE:
-                    printExit();
+                    ui.showExit();
                     return;
 
                 case LIST:
@@ -259,7 +216,7 @@ public class Yin {
                             " Try: todo, deadline, event, list, mark, unmark, delete or bye.");
                 }
             } catch (YinException e) {
-                printError(e.getMessage());
+                ui.showError(e.getMessage());
             }
         }
     }
