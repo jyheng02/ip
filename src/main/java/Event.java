@@ -1,23 +1,33 @@
-public class Event extends Task {
-    protected final String from;
-    protected final String to;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-    public Event(String description, String from, String to) {
+public class Event extends Task {
+    protected final LocalDateTime from;
+    protected final LocalDateTime to;
+
+    public Event(String description, LocalDateTime from, LocalDateTime to) {
         super(description);
         this.from = from;
         this.to = to;
     }
 
-    public String getFrom() {
+    public LocalDateTime getFrom() {
         return from;
     }
 
-    public String getTo() {
+    public LocalDateTime getTo() {
         return to;
     }
 
     @Override
+    public boolean occursOn(LocalDate date) {
+        return !(to.toLocalDate().isBefore(date) || from.toLocalDate().isAfter(date));
+    }
+
+    @Override
     public String toString() {
-        return ("[E]" + super.toString() + " (from: " + from + " to: " + to + ")");
+        return ("[E]" + super.toString()
+                + " (from: " + DateTimes.formatDisplay(from)
+                + " to: " + DateTimes.formatDisplay(to) + ")");
     }
 }

@@ -131,12 +131,17 @@ public class Yin {
         }
         String description = body.substring(0, separator).trim();
         // separator + 3 to skip "/by"
-        String by = body.substring(separator + 3).trim();
-        if (description.isEmpty() || by.isEmpty()) {
+        String byRaw = body.substring(separator + 3).trim();
+        if (description.isEmpty() || byRaw.isEmpty()) {
             throw new YinException("Give me a proper input please..." +
                     " Deadline format: deadline <desc> /by <when>");
         }
-        addTask(new Deadline(collapseSpaces(description), collapseSpaces(by)));
+        try {
+            addTask(new Deadline(collapseSpaces(description), DateTimes.parseFlexible(byRaw)));
+        } catch (Exception e)  {
+            throw new YinException("I couldn't parse the date/time :(." +
+                    "\n    Try formats like 2019-10-15 or 2/12/2019 1800.");
+        }
     }
 
     // function to handle events
@@ -153,13 +158,20 @@ public class Yin {
         String description = body.substring(0, fromPosition).trim();
         // skips "/from" and then "/to"
         // parsing index
-        String from = body.substring(fromPosition + 5, toPosition).trim();
-        String to = body.substring(toPosition + 3).trim();
-        if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
+        String fromRaw = body.substring(fromPosition + 5, toPosition).trim();
+        String toRaw = body.substring(toPosition + 3).trim();
+        if (description.isEmpty() || fromRaw.isEmpty() || toRaw.isEmpty()) {
             throw new YinException("Please feed me some proper input man..." +
                     " Event format: event <desc> /from <start> /to <end>");
         }
-        addTask(new Event(collapseSpaces(description), collapseSpaces(from), collapseSpaces(to)));
+        try {
+            addTask(new Event(collapseSpaces(description),
+                    DateTimes.parseFlexible(fromRaw),
+                    DateTimes.parseFlexible(toRaw)));
+        } catch (Exception e) {
+            throw new YinException("I couldn't parse one of the dates/times :(." +
+                    "\n    Try formats like 2019-10-15 or 2/12/2019 1800.");
+        }
     }
 
     public static void main(String[] args) {

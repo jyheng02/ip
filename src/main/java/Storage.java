@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.nio.file.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,11 +26,13 @@ public class Storage {
         } else if (t instanceof Deadline) {
             Deadline d = (Deadline) t;
             return String.join(" | ", "D", done,
-                    d.getDescription(), d.getBy());
+                    d.getDescription(), DateTimes.formatStorage(d.getBy()));
         } else if (t instanceof Event) {
             Event e = (Event) t;
             return String.join(" | ", "E", done,
-                    e.getDescription(), e.getFrom(), e.getTo());
+                    e.getDescription(),
+                    DateTimes.formatStorage(e.getFrom()),
+                    DateTimes.formatStorage(e.getTo()));
         }
         return String.join(" | ", "T", done, t.getDescription());
     }
@@ -63,12 +66,18 @@ public class Storage {
                     t = new Todo(desc);
                     break;
                 case "D":
-                    String by = p.length > 3 ? p[3] : "";
+                    if (p.length < 4) {
+                        continue;
+                    }
+                    LocalDateTime by = DateTimes.parseFlexible(p[3]);
                     t = new Deadline(desc, by);
                     break;
                 case "E":
-                    String from = p.length  > 3 ? p[3] : "";
-                    String to = p.length > 4 ? p[4] : "";
+                    if (p.length < 5) {
+                        continue;
+                    }
+                    LocalDateTime from = DateTimes.parseFlexible(p[3]);
+                    LocalDateTime to = DateTimes.parseFlexible(p[4]);
                     t = new Event(desc, from, to);
                     break;
                 default:
@@ -81,6 +90,8 @@ public class Storage {
             }
         } catch (IOException e) {
             System.err.println("Load failed: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Load parse failed: " + e.getMessage());
         }
         return list;
     }
