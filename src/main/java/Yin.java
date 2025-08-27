@@ -3,7 +3,9 @@ import java.util.Scanner;
 
 public class Yin {
     private static final String INDENT = "  ";
-    private static final String LINE = "____________________________________________________________";
+    private static final String LINE =
+            "____________________________________________________________";
+    private static final Storage storage = new Storage("data/Yin.txt");
 
     private static void printLine() {
         System.out.println(INDENT + LINE);
@@ -37,6 +39,7 @@ public class Yin {
         System.out.println("      " + task);
         System.out.println("    Now you have " + tasks.size() + " tasks in the list.");
         printLine();
+        storage.save(tasks);
     }
 
     public static void printTasks() {
@@ -56,6 +59,7 @@ public class Yin {
         System.out.println("      " + removed);
         System.out.println("    Now you have " + tasks.size() + " tasks in the list.");
         printLine();
+        storage.save(tasks);
     }
 
     // function to collapse whitespaces to a single space
@@ -91,6 +95,7 @@ public class Yin {
         System.out.println("    Solid, I've marked this task as done:");
         System.out.println("      " + task);
         printLine();
+        storage.save(tasks);
     }
 
     // function to unmark task
@@ -101,6 +106,7 @@ public class Yin {
         System.out.println("    Skill issue, I've marked this task as not done yet:");
         System.out.println("      " + task);
         printLine();
+        storage.save(tasks);
     }
 
     // function to handle to do inputs
@@ -121,14 +127,14 @@ public class Yin {
         int separator =  body.indexOf("/by");
         if (separator == -1) {
             throw new YinException("Give me a proper input please..." +
-                    "Deadline format: deadline <desc> /by <when>");
+                    " Deadline format: deadline <desc> /by <when>");
         }
         String description = body.substring(0, separator).trim();
         // separator + 3 to skip "/by"
         String by = body.substring(separator + 3).trim();
         if (description.isEmpty() || by.isEmpty()) {
             throw new YinException("Give me a proper input please..." +
-                    "Deadline format: deadline <desc> /by <when>");
+                    " Deadline format: deadline <desc> /by <when>");
         }
         addTask(new Deadline(collapseSpaces(description), collapseSpaces(by)));
     }
@@ -142,7 +148,7 @@ public class Yin {
         int toPosition = body.indexOf("/to", fromPosition + 5);
         if (fromPosition == -1 || toPosition == -1 || toPosition < fromPosition + 5) {
             throw new YinException("Please feed me a proper input man..." +
-                    "Event format: event <desc> /from <start> /to <end>");
+                    " Event format: event <desc> /from <start> /to <end>");
         }
         String description = body.substring(0, fromPosition).trim();
         // skips "/from" and then "/to"
@@ -150,12 +156,17 @@ public class Yin {
         String from = body.substring(fromPosition + 5, toPosition).trim();
         String to = body.substring(toPosition + 3).trim();
         if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
-            throw new YinException("Please feed me some proper input man... Event format: event <desc> /from <start> /to <end>");
+            throw new YinException("Please feed me some proper input man..." +
+                    " Event format: event <desc> /from <start> /to <end>");
         }
         addTask(new Event(collapseSpaces(description), collapseSpaces(from), collapseSpaces(to)));
     }
 
     public static void main(String[] args) {
+
+        // load tasks from disk (first run creates file/folder)
+        tasks.clear();
+        tasks.addAll(storage.load());
 
         printGreeting();
 
@@ -196,7 +207,7 @@ public class Yin {
                 case DEADLINE:
                     if (command.equals("deadline")) {
                         throw new YinException("Give me a proper input please..." +
-                                "Deadline format: deadline <desc> /by <when>");
+                                " Deadline format: deadline <desc> /by <when>");
                     }
                     handleDeadline(command);
                     break;
