@@ -1,4 +1,6 @@
-public class Task {
+import java.time.LocalDate;
+
+public class Task implements Schedulable {
     protected String description;
     protected boolean isDone;
 
@@ -25,6 +27,12 @@ public class Task {
 
     public boolean isDone() {
         return isDone;
+    }
+
+    // for tasks without dates (Todo)
+    @Override
+    public boolean occursOn(LocalDate date) {
+        return false;
     }
 
     @Override
