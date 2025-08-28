@@ -1,6 +1,6 @@
 package yin;
 
-public class DeleteCommand extends Command{
+public class DeleteCommand extends Command {
     private final int index0;
 
     public DeleteCommand(int index0) {
