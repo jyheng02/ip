@@ -28,11 +28,7 @@ public class Ui {
         showLine();
     }
 
-    public String readCommand() {
-        return sc.nextLine();
-    }
-
-    // Helper messages (same wording as your current app)
+    // helper messages (same wording as your current app)
     public void showAdded(Task t, int size) {
         showLine();
         System.out.println("    Say less. I've added this task:");
