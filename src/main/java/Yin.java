@@ -148,75 +148,65 @@ public class Yin {
             try {
                 // handle whitespace only input
                 if (command.isEmpty()) {
-                    throw new YinException("input is empty >:(." +
+                    throw new YinException("input is empty >:(" +
                             "\n    Give me something please.");
                 }
 
-                Command c = Command.getCommand(command);
+                Parser.Parsed p = Parser.parse(command);
 
-                switch (c) {
+                switch (p.type) {
                 case BYE:
                     ui.showExit();
                     return;
 
                 case LIST:
-                    if (!command.equals("list")) {
-                        throw new YinException("list alone is enough!");
-                    }
                     printTasks();
                     break;
 
                 case TODO:
-                    if (command.equals("todo")) {
-                        throw new YinException("todo needs a description," +
-                                "\n    I'm not bright enough to read minds," +
-                                " e.g. \"todo borrow book\"");
-                    }
-                    handleTodo(command);
+                    addTask(new Todo(p.desc));
                     break;
 
                 case DEADLINE:
-                    if (command.equals("deadline")) {
-                        throw new YinException("Give me a proper input please..." +
-                                "\n    Deadline format: deadline <desc> /by <when>");
+                    try {
+                        addTask(new Deadline(p.desc, DateTimes.parseFlexible(p.by)));
+                    } catch (Exception e) {
+                        throw new YinException("I couldn't parse the date/time :(" +
+                                "\n    Try formats like 2019-10-15 or 2/12/2019 1800.");
                     }
-                    handleDeadline(command);
                     break;
 
                 case EVENT:
-                    if (command.equals("event")) {
-                        throw new YinException("Please feed me some proper input..." +
-                                "\n    Event format: event <desc> /from <start> /to <end>");
+                    try {
+                        addTask(new Event(p.desc,
+                                DateTimes.parseFlexible(p.from),
+                                DateTimes.parseFlexible(p.to)));
+                    } catch (Exception e) {
+                        throw new YinException("I couldn't parse one of the dates/times :(" +
+                                "\n    Try formats like 2019-10-15 or 2/12/2019 1800.");
                     }
-                    handleEvent(command);
                     break;
 
                 case MARK:
-                    if (command.equals("mark")) {
-                        throw new YinException("Give task number, e.g. \"mark 2\"");
+                    if (p.index0 < 0 || p.index0 >= tasks.size()) {
+                        throw new YinException("Invalid index to mark");
                     }
-                    doMark(parseIndex(command, "mark"));
+                    doMark(p.index0);
                     break;
 
                 case UNMARK:
-                    if (command.equals("unmark")) {
-                        throw new YinException("Give task number, e.g. \"unmark 2\"");
+                    if (p.index0 < 0 || p.index0 >= tasks.size()) {
+                        throw new YinException("Invalid index to unmark");
                     }
-                    doUnmark(parseIndex(command, "unmark"));
+                    doUnmark(p.index0);
                     break;
 
                 case DELETE:
-                    if (command.equals("delete")) {
-                        throw new YinException("Give task number, e.g. \"delete 2\"");
+                    if (p.index0 < 0 || p.index0 >= tasks.size()) {
+                        throw new YinException("Invalid index to delete");
                     }
-                    deleteTask(parseIndex(command, "delete"));
+                    deleteTask(p.index0);
                     break;
-
-                case UNKNOWN:
-                default:
-                    throw new YinException("Give me a command first >:(." +
-                            "\n    Try: todo, deadline, event, list," +
-                            " mark, unmark, delete or bye.");
                 }
             } catch (YinException e) {
                 ui.showError(e.getMessage());
