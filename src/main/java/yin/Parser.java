@@ -157,6 +157,13 @@ public final class Parser {
             }
         }
 
+        case "find": {
+            if (tail.isBlank()) {
+                throw new YinException("Find needs a keyword, e.g. \"find book\"");
+            }
+            return new FindCommand(collapseSpaces(tail));
+        }
+
         default:
             return new UnknownCommand("Give me a command first >:(" +
                     "\n    Try: todo, deadline, event, list, mark, unmark, delete or bye.");

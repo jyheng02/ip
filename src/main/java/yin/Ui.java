@@ -1,6 +1,7 @@
 package yin;
 
 import java.util.Scanner;
+import java.util.List;
 
 /**
  * Handles all user-facing messages and formatting (banners, lists, confirmations, errors).
@@ -111,6 +112,25 @@ public class Ui {
         showLine();
         System.out.println("    Skill issue, I've marked this task as not done yet:");
         System.out.println("      " + t);
+        showLine();
+    }
+
+    /**
+     * Prints the list of tasks that matched a find query.
+     *
+     * @param matches tasks that matched (may be empty)
+     */
+    public void showMatches(List<Task> matches) {
+        showLine();
+        if (matches.isEmpty()) {
+            System.out.println("    No matches found.");
+            showLine();
+            return;
+        }
+        System.out.println("    Here are the matching tasks in your list:");
+        for (int i = 0; i < matches.size(); i++) {
+            System.out.println("    " + (i + 1) + "." + matches.get(i));
+        }
         showLine();
     }
 }
