@@ -7,10 +7,17 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
+/**
+ * Utility class for parsing and formatting {@link LocalDateTime} objects used in tasks.
+ *
+ * <p>Supports multiple flexible input formats for parsing, and provides distinct
+ * formatters for user display and storage serialization.</p>
+ */
 public class DateTimes {
+    /** Hidden constructor; this class should not be instantiated. */
     private DateTimes() {}
 
-    // input formats to accept
+    /** Accepted input formats for parsing user-provided date/time strings. */
     private static final List<DateTimeFormatter> INPUTS = List.of(
             DateTimeFormatter.ofPattern("yyy-MM-dd HHmm"),
             DateTimeFormatter.ofPattern("yyyy-MM-dd"),
@@ -18,34 +25,53 @@ public class DateTimes {
             DateTimeFormatter.ofPattern("d/M/yyyy")
     );
 
-    // display "MMM dd yyyy", show time if present
+    /** Formatter for display: {@code "MMM d yyyy"} (no time). */
     private static final DateTimeFormatter DISPLAY_DATE = DateTimeFormatter.ofPattern("MMM d yyyy");
+
+    /** Formatter for display: {@code "MMM d yyyy, h:mma"} (with time). */
     private static final DateTimeFormatter DISPLAY_DATETIME =
             DateTimeFormatter.ofPattern("MMM d yyyy, h:mma");
 
-    // storage
+    /** Formatter for storage (ISO local date-time). */
     private static final DateTimeFormatter STORAGE = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
-    // parse user string into LocalDateTime
+    /**
+     * Parses a user-provided string into a {@link LocalDateTime}.
+     *
+     * <p>Tries each of the accepted input formats. If only a date is provided,
+     * it defaults the time to midnight. If none of the formats match,
+     * it falls back to {@link LocalDateTime#parse(CharSequence)}.</p>
+     *
+     * @param text the input string
+     * @return parsed date-time
+     * @throws DateTimeParseException if parsing fails
+     */
     public static LocalDateTime parseFlexible(String text) throws DateTimeParseException {
         String string = text.trim();
         for (DateTimeFormatter formatter : INPUTS) {
             try {
                 return LocalDateTime.parse(string, formatter);
             } catch (DateTimeParseException ignored) {
-                // try date only -> use midnight
                 try {
                     LocalDate d = LocalDate.parse(string, formatter);
                     return LocalDateTime.of(d, LocalTime.MIDNIGHT);
                 } catch (DateTimeParseException ignored2) {
-                    // continue
+                    // try next formatter
                 }
             }
         }
         return LocalDateTime.parse(string);
     }
 
-    // format for user display, include time only if !midnight
+    /**
+     * Formats a date-time for user display.
+     *
+     * <p>If the time is exactly midnight, only the date is shown.
+     * Otherwise, both date and time are shown.</p>
+     *
+     * @param dt the date-time to format
+     * @return formatted string suitable for display
+     */
     public static String formatDisplay(LocalDateTime dt) {
         if (dt.toLocalTime().equals(LocalTime.MIDNIGHT)) {
             return dt.toLocalDate().format(DISPLAY_DATE);
@@ -53,7 +79,12 @@ public class DateTimes {
         return dt.format(DISPLAY_DATETIME);
     }
 
-    // format for storage
+    /**
+     * Formats a date-time for persistent storage.
+     *
+     * @param dt the date-time to format
+     * @return ISO-8601 formatted string
+     */
     public static String formatStorage(LocalDateTime dt) {
         return dt.format(STORAGE);
     }

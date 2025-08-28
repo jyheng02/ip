@@ -9,14 +9,36 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Persists and retrieves {@link Task} data from the local filesystem.
+ *
+ * <p>Tasks are stored one per line in a simple pipe-delimited format:</p>
+ * <ul>
+ *   <li>{@code T | 0|1 | description}</li>
+ *   <li>{@code D | 0|1 | description | byDateTime}</li>
+ *   <li>{@code E | 0|1 | description | fromDateTime | toDateTime}</li>
+ * </ul>
+ * <p>Date-time fields are serialized using {@link DateTimes#formatStorage(java.time.LocalDateTime)}
+ * and parsed using {@link DateTimes#parseFlexible(String)}.</p>
+ */
 public class Storage {
+    /** Path to the data file used for persistence. */
     private final Path file;
 
+    /**
+     * Creates a storage backed by the given relative file path.
+     *
+     * @param relativePath path to the data file, relative to the working directory
+     */
     public Storage(String relativePath) {
         this.file = Paths.get(relativePath);
     }
 
-    // create parent directory if missing
+    /**
+     * Ensures the parent directory of the data file exists, creating it if necessary.
+     *
+     * @throws IOException if the directory cannot be created
+     */
     private void ensureParentExists() throws IOException {
         Path parent = file.getParent();
         if (parent != null && !Files.exists(parent)) {
@@ -24,6 +46,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Serializes a {@link Task} into the storage line format.
+     *
+     * @param t the task to serialize
+     * @return a single-line, pipe-delimited representation of the task
+     */
     private String serialise(Task t) {
         String done = t.isDone() ? "1" : "0";
         if (t instanceof Todo) {
@@ -42,8 +70,15 @@ public class Storage {
         return String.join(" | ", "T", done, t.getDescription());
     }
 
-    // load tasks from disk, creates folders/file if missing
-    // returns empty list on first run
+    /**
+     * Loads tasks from disk.
+     *
+     * <p>If the data file or its parent directories do not exist, they are created and
+     * an empty list is returned (first run behavior). Malformed lines are skipped.
+     * Tasks marked as done in storage are marked accordingly in memory.</p>
+     *
+     * @return a list of tasks loaded from the data file (possibly empty)
+     */
     public List<Task> load() {
         List<Task> list = new ArrayList<>();
         try {
@@ -101,7 +136,13 @@ public class Storage {
         return list;
     }
 
-    // save tasks to disk (overwrites file), creates folders/file if missing
+    /**
+     * Saves the given tasks to disk, overwriting the file contents.
+     *
+     * <p>Creates the parent directory and data file if they do not already exist.</p>
+     *
+     * @param tasks the tasks to persist
+     */
     public void save(List<Task> tasks) {
         try {
             ensureParentExists();

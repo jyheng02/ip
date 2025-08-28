@@ -2,15 +2,39 @@ package yin;
 
 import java.time.LocalDateTime;
 
+/**
+ * A {@link Command} that adds a new {@link Deadline} task to the {@link TaskList}.
+ *
+ * <p>The deadline requires a description and a due datetime. If either is missing
+ * or cannot be parsed, a {@link YinException} is thrown with a helpful message.</p>
+ */
 public class AddDeadlineCommand extends Command {
+    /** The description of the deadline task. */
     private final String description;
+
+    /** The raw user input for the due datetime. */
     private final String byRaw;
 
+    /**
+     * Creates a new command to add a deadline.
+     *
+     * @param description the description of the deadline task
+     * @param byRaw       the raw string representing the due datetime
+     */
     public AddDeadlineCommand(String description, String byRaw) {
         this.description = description;
         this.byRaw = byRaw;
     }
 
+    /**
+     * Executes this command: parses the due datetime, creates the deadline task,
+     * adds it to the task list, displays a confirmation, and saves to storage.
+     *
+     * @param tasks   the task list to add the deadline into
+     * @param ui      the user interface to display feedback
+     * @param storage the storage to persist the updated task list
+     * @throws YinException if the input is invalid or parsing fails
+     */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws YinException {
         if (description == null || description.isBlank() || byRaw == null || byRaw.isBlank()) {
