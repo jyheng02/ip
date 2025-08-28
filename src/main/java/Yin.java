@@ -6,23 +6,23 @@ public class Yin {
     private static final Ui ui = new Ui();
 
 
-    private static final ArrayList<Task> tasks = new ArrayList<>();
+    private static TaskList tasks = new TaskList();
 
     private static void addTask(Task task) {
         tasks.add(task);
         ui.showAdded(task, tasks.size());
-        storage.save(tasks);
+        storage.save(tasks.asList());
     }
 
     public static void printTasks() {
-        ui.showList(tasks);
+        ui.showList(tasks.asList());
     }
 
     // function to delete tasks
     private static void deleteTask(int index) {
         Task removed = tasks.remove(index);
         ui.showRemoved(removed, tasks.size());
-        storage.save(tasks);
+        storage.save(tasks.asList());
     }
 
     // function to collapse whitespaces to a single space
@@ -55,7 +55,7 @@ public class Yin {
         Task task = tasks.get(index);
         task.mark();
         ui.showMarked(task);
-        storage.save(tasks);
+        storage.save(tasks.asList());
     }
 
     // function to unmark task
@@ -63,7 +63,7 @@ public class Yin {
         Task task = tasks.get(index);
         task.unmark();
         ui.showUnmarked(task);
-        storage.save(tasks);
+        storage.save(tasks.asList());
     }
 
     // function to handle to do inputs
@@ -71,7 +71,8 @@ public class Yin {
         String description = input.substring("todo".length()).trim();
         // if description empty give example input
         if (description.isEmpty()) {
-            throw new YinException("todo needs a description fam, I'm not bright enough to read minds," +
+            throw new YinException("todo needs a description fam," +
+                    "\n    I'm not bright enough to read minds," +
                     " e.g. \"todo borrow book\"");
         }
         addTask(new Todo(collapseSpaces(description)));
@@ -84,14 +85,14 @@ public class Yin {
         int separator =  body.indexOf("/by");
         if (separator == -1) {
             throw new YinException("Give me a proper input please..." +
-                    " Deadline format: deadline <desc> /by <when>");
+                    "\n    Deadline format: deadline <desc> /by <when>");
         }
         String description = body.substring(0, separator).trim();
         // separator + 3 to skip "/by"
         String byRaw = body.substring(separator + 3).trim();
         if (description.isEmpty() || byRaw.isEmpty()) {
             throw new YinException("Give me a proper input please..." +
-                    " Deadline format: deadline <desc> /by <when>");
+                    "\n    Deadline format: deadline <desc> /by <when>");
         }
         try {
             addTask(new Deadline(collapseSpaces(description), DateTimes.parseFlexible(byRaw)));
@@ -110,7 +111,7 @@ public class Yin {
         int toPosition = body.indexOf("/to", fromPosition + 5);
         if (fromPosition == -1 || toPosition == -1 || toPosition < fromPosition + 5) {
             throw new YinException("Please feed me a proper input man..." +
-                    " Event format: event <desc> /from <start> /to <end>");
+                    "\n    Event format: event <desc> /from <start> /to <end>");
         }
         String description = body.substring(0, fromPosition).trim();
         // skips "/from" and then "/to"
@@ -119,7 +120,7 @@ public class Yin {
         String toRaw = body.substring(toPosition + 3).trim();
         if (description.isEmpty() || fromRaw.isEmpty() || toRaw.isEmpty()) {
             throw new YinException("Please feed me some proper input man..." +
-                    " Event format: event <desc> /from <start> /to <end>");
+                    "\n    Event format: event <desc> /from <start> /to <end>");
         }
         try {
             addTask(new Event(collapseSpaces(description),
@@ -134,8 +135,7 @@ public class Yin {
     public static void main(String[] args) {
 
         // load tasks from disk (first run creates file/folder)
-        tasks.clear();
-        tasks.addAll(storage.load());
+        tasks = new TaskList(storage.load());
 
         ui.showWelcome();
 
@@ -148,7 +148,8 @@ public class Yin {
             try {
                 // handle whitespace only input
                 if (command.isEmpty()) {
-                    throw new YinException("input is empty >:(. Give me something please.");
+                    throw new YinException("input is empty >:(." +
+                            "\n    Give me something please.");
                 }
 
                 Command c = Command.getCommand(command);
@@ -168,7 +169,8 @@ public class Yin {
                 case TODO:
                     if (command.equals("todo")) {
                         throw new YinException("todo needs a description," +
-                                " I'm not bright enough to read minds, e.g. \"todo borrow book\"");
+                                "\n    I'm not bright enough to read minds," +
+                                " e.g. \"todo borrow book\"");
                     }
                     handleTodo(command);
                     break;
@@ -176,7 +178,7 @@ public class Yin {
                 case DEADLINE:
                     if (command.equals("deadline")) {
                         throw new YinException("Give me a proper input please..." +
-                                " Deadline format: deadline <desc> /by <when>");
+                                "\n    Deadline format: deadline <desc> /by <when>");
                     }
                     handleDeadline(command);
                     break;
@@ -184,7 +186,7 @@ public class Yin {
                 case EVENT:
                     if (command.equals("event")) {
                         throw new YinException("Please feed me some proper input..." +
-                                " Event format: event <desc> /from <start> /to <end>");
+                                "\n    Event format: event <desc> /from <start> /to <end>");
                     }
                     handleEvent(command);
                     break;
@@ -213,7 +215,8 @@ public class Yin {
                 case UNKNOWN:
                 default:
                     throw new YinException("Give me a command first >:(." +
-                            " Try: todo, deadline, event, list, mark, unmark, delete or bye.");
+                            "\n    Try: todo, deadline, event, list," +
+                            " mark, unmark, delete or bye.");
                 }
             } catch (YinException e) {
                 ui.showError(e.getMessage());

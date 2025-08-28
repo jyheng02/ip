@@ -8,7 +8,8 @@
     Now you have 1 tasks in the list.
   ____________________________________________________________
   ____________________________________________________________
-    todo needs a description, I'm not bright enough to read minds, e.g. "todo borrow book"
+    todo needs a description,
+    I'm not bright enough to read minds, e.g. "todo borrow book"
   ____________________________________________________________
   ____________________________________________________________
     Say less. I've added this task:
@@ -21,7 +22,8 @@
     Now you have 3 tasks in the list.
   ____________________________________________________________
   ____________________________________________________________
-    Give me a proper input please... Deadline format: deadline <desc> /by <when>
+    Give me a proper input please...
+    Deadline format: deadline <desc> /by <when>
   ____________________________________________________________
   ____________________________________________________________
     I couldn't parse the date/time :(.
@@ -33,10 +35,12 @@
     Now you have 4 tasks in the list.
   ____________________________________________________________
   ____________________________________________________________
-    Please feed me some proper input... Event format: event <desc> /from <start> /to <end>
+    Please feed me some proper input...
+    Event format: event <desc> /from <start> /to <end>
   ____________________________________________________________
   ____________________________________________________________
-    Please feed me some proper input man... Event format: event <desc> /from <start> /to <end>
+    Please feed me some proper input man...
+    Event format: event <desc> /from <start> /to <end>
   ____________________________________________________________
   ____________________________________________________________
     I couldn't parse one of the dates/times :(.
@@ -80,10 +84,12 @@
     list alone is enough!
   ____________________________________________________________
   ____________________________________________________________
-    Give me a command first >:(. Try: todo, deadline, event, list, mark, unmark, delete or bye.
+    Give me a command first >:(.
+    Try: todo, deadline, event, list, mark, unmark, delete or bye.
   ____________________________________________________________
   ____________________________________________________________
-    input is empty >:(. Give me something please.
+    input is empty >:(.
+    Give me something please.
   ____________________________________________________________
   ____________________________________________________________
     Say less. I've added this task:
@@ -109,7 +115,8 @@
     Now you have 6 tasks in the list.
   ____________________________________________________________
   ____________________________________________________________
-    input is empty >:(. Give me something please.
+    input is empty >:(.
+    Give me something please.
   ____________________________________________________________
   ____________________________________________________________
     See you later alligator.
