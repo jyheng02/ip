@@ -1,3 +1,5 @@
+package yin;
+
 import java.time.LocalDate;
 
 public interface Schedulable {

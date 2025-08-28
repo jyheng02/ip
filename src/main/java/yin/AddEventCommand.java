@@ -1,3 +1,5 @@
+package yin;
+
 import java.time.LocalDateTime;
 
 public class AddEventCommand extends Command {

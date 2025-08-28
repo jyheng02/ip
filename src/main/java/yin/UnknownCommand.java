@@ -1,3 +1,5 @@
+package yin;
+
 public class UnknownCommand extends Command {
     private final String message;
 

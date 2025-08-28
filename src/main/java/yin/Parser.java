@@ -1,3 +1,5 @@
+package yin;
+
 public final class Parser {
 
     private Parser() {}

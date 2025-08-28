@@ -1,3 +1,5 @@
+package yin;
+
 import java.util.Scanner;
 
 public class Yin {

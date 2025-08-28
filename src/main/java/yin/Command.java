@@ -1,3 +1,5 @@
+package yin;
+
 public abstract class Command {
     // execute command against current state
     public abstract void execute(TaskList tasks, Ui ui, Storage storage) throws YinException;
