@@ -1,15 +1,55 @@
 package yin;
 
+/**
+ * Parses raw user input into {@link Command} objects.
+ *
+ * <p>This utility class supports commands such as {@code todo}, {@code deadline},
+ * {@code event}, {@code list}, {@code mark}, {@code unmark}, {@code delete}, and {@code bye}.
+ * For invalid inputs, it either throws a {@link YinException} or produces an
+ * {@link UnknownCommand} that signals an unrecognized command.</p>
+ */
 public final class Parser {
 
+    /**
+     * Utility class; not meant to be instantiated.
+     */
     private Parser() {}
 
-    // collapse multiple whitespaces to single space
+    /**
+     * Collapses multiple consecutive whitespace characters into a single space and trims
+     * leading/trailing whitespace.
+     *
+     * @param string the input string
+     * @return a trimmed string with internal whitespace normalized to single spaces
+     */
     private static String collapseSpaces(String string) {
         return string.trim().replaceAll("\\s+", " ");
     }
 
-    // parse raw input into a command object
+    /**
+     * Parses a raw user input line into a {@link Command} for execution.
+     *
+     * <p>This method tokenizes the first word as the command head (case-insensitive)
+     * and treats the remainder as the tail/arguments. It validates required arguments
+     * for supported commands and constructs the corresponding {@code Command} objects.
+     * Unknown or malformed inputs yield an {@link UnknownCommand} or a {@link YinException}
+     * with a helpful message.</p>
+     *
+     * <p>Supported commands:</p>
+     * <ul>
+     *   <li>{@code bye}</li>
+     *   <li>{@code list}</li>
+     *   <li>{@code todo &lt;desc&gt;}</li>
+     *   <li>{@code deadline &lt;desc&gt; /by &lt;when&gt;}</li>
+     *   <li>{@code event &lt;desc&gt; /from &lt;start&gt; /to &lt;end&gt;}</li>
+     *   <li>{@code mark &lt;index&gt;}, {@code unmark &lt;index&gt;}, {@code delete &lt;index&gt;}</li>
+     * </ul>
+     *
+     * @param fullCommand the raw user input line
+     * @return a {@link Command} representing the parsed action
+     * @throws YinException if the input is empty or violates the expected format
+     *                      for the given command
+     */
     public static Command parse(String fullCommand) throws YinException {
         if (fullCommand == null || fullCommand.trim().isEmpty()) {
             throw new YinException("input is empty >:(" +
@@ -98,8 +138,7 @@ public final class Parser {
                 throw new YinException("Give task number, e.g. \"unmark 2\"");
             }
             try {
-                // convert to 0-based
-                int index0 = Integer.parseInt(tail.trim()) - 1;
+                int index0 = Integer.parseInt(tail.trim()) - 1; // convert to 0-based
                 return new UnmarkCommand(index0);
             } catch (NumberFormatException e) {
                 throw new YinException("Task number must be integer! e.g. \"unmark 2\"");
@@ -111,8 +150,7 @@ public final class Parser {
                 throw new YinException("Give task number, e.g. \"delete 2\"");
             }
             try {
-                // convert to 0-based
-                int index0 = Integer.parseInt(tail.trim()) - 1;
+                int index0 = Integer.parseInt(tail.trim()) - 1; // convert to 0-based
                 return new DeleteCommand(index0);
             } catch (NumberFormatException e) {
                 throw new YinException("Task number must be integer! e.g. \"delete 2\"");
@@ -120,7 +158,6 @@ public final class Parser {
         }
 
         default:
-            // unknown command -> handled by a Command that throws on execute()
             return new UnknownCommand("Give me a command first >:(" +
                     "\n    Try: todo, deadline, event, list, mark, unmark, delete or bye.");
         }
