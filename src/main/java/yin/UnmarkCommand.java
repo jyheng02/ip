@@ -1,6 +1,6 @@
 package yin;
 
-public class UnmarkCommand extends  Command {
+public class UnmarkCommand extends Command {
     private final int index0;
 
     public UnmarkCommand(int index0) {

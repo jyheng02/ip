@@ -6,7 +6,6 @@ public class Ui {
     private static final String INDENT = "  ";
     private static final String LINE =
             "____________________________________________________________";
-    private final Scanner sc = new Scanner(System.in);
 
     public void showLine() {
         System.out.println(INDENT + LINE);
