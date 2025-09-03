@@ -14,7 +14,7 @@ public class Deadline extends Task {
      * Creates a new deadline task with the given description and due datetime.
      *
      * @param description the description of the deadline task
-     * @param by          the due datetime
+     * @param by the due datetime
      */
     public Deadline(String description, LocalDateTime by) {
         super(description);
@@ -34,7 +34,7 @@ public class Deadline extends Task {
      * Checks if this deadline falls on the given date.
      *
      * @param date the date to check
-     * @return {@code true} if the deadline is due on that date
+     * @return true if the deadline is due on that date
      */
     @Override
     public boolean occursOn(LocalDate date) {

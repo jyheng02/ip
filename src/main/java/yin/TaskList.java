@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Wraps a mutable list of {@link Task} objects and provides convenience methods
- * to add, remove, mark, and unmark tasks.
- *
- * <p>This class acts as the in-memory model of the task collection. It is
- * backed by an {@link ArrayList} but exposes only higher-level operations
- * relevant to the domain.</p>
+ * Stores a list of tasks and provides methods to add, remove,
+ * mark, and unmark them.
+ * This class is the memory model of the task collection.
+ * It uses an ArrayList inside but only gives higher-level operations.
  */
 public class TaskList {
     /** Underlying storage for tasks. */
@@ -68,7 +66,7 @@ public class TaskList {
     }
 
     /**
-     * Returns tasks whose descriptions contain the keyword (case-insensitive).
+     * Returns tasks which contains keyword in their descriptions (case-insensitive).
      *
      * @param word text to search for
      * @return list of matching tasks (may be empty)
@@ -94,7 +92,7 @@ public class TaskList {
     }
 
     /**
-     * Creates and adds a new {@link Todo} task.
+     * Creates and adds a new Todo task.
      *
      * @param description the description of the todo
      * @return the created task
@@ -106,10 +104,10 @@ public class TaskList {
     }
 
     /**
-     * Creates and adds a new {@link Deadline} task.
+     * Creates and adds a new Deadline task.
      *
      * @param description the task description
-     * @param by          the deadline timestamp
+     * @param by the deadline timestamp
      * @return the created task
      */
     public Task addDeadline(String description, java.time.LocalDateTime by) {
@@ -119,11 +117,11 @@ public class TaskList {
     }
 
     /**
-     * Creates and adds a new {@link Event} task.
+     * Creates and adds a new Event task.
      *
      * @param description the event description
-     * @param from        start time
-     * @param to          end time
+     * @param from start time
+     * @param to end time
      * @return the created task
      */
     public Task addEvent(String description, java.time.LocalDateTime from,

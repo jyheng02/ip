@@ -4,17 +4,9 @@ import java.util.Scanner;
 
 /**
  * Entry point of the Yin CLI application.
- *
- * <p>It wires together the {@link Storage}, {@link TaskList}, and {@link Ui} components,
- * then runs a read–eval–print loop (REPL) that parses user input into {@link Command}
- * objects (via {@link Parser}) and executes them. The loop terminates when a command
- * signals exit (e.g., the {@code bye} command).</p>
- *
- * @see Parser
- * @see Command
- * @see Storage
- * @see TaskList
- * @see Ui
+ * It wires together the Storage, TaskList, and Ui components,
+ * then runs a loop that parses user input into Command objects (via Parser) and executes them.
+ * The loop terminates when a command signals exit (e.g. bye command)
  */
 public class Yin {
     /** Backing store for persisting tasks to disk. */
@@ -23,18 +15,16 @@ public class Yin {
     /** Console user interface for input/output. */
     private static final Ui ui = new Ui();
 
-    /** In-memory list of tasks manipulated by commands. */
+    /** List of tasks manipulated by commands. */
     private static TaskList tasks = new TaskList();
 
     /**
      * Starts the application by loading persisted tasks, greeting the user,
-     * and running the REPL until an exit command is issued.
-     *
-     * <p>The REPL reads a line of input, trims it, rejects empty input,
-     * parses it into a {@link Command} using {@link Parser#parse(String)},
-     * and executes it against the current {@link TaskList}, {@link Ui}, and {@link Storage}.
-     * Any {@link YinException} thrown by parsing or execution is caught and rendered
-     * via {@link Ui#showError(String)}.</p>
+     * and running the loop until an exit command is given.
+     * The loop reads input, trims it, rejects empty input,
+     * parses it into a Command using Parser.parse(String),
+     * and executes it with the current TaskList, Ui, and Storage.
+     * Any YinException thrown by parsing or execution is caught and shown through Ui.
      *
      * @param args Command-line arguments (unused).
      */
@@ -54,8 +44,8 @@ public class Yin {
             try {
                 // handle whitespace-only input.
                 if (command.isEmpty()) {
-                    throw new YinException("input is empty >:(" +
-                            "\n    Give me something please.");
+                    throw new YinException("input is empty >:("
+                           + "\n    Give me something please.");
                 }
 
                 // parse raw command into a command object.
