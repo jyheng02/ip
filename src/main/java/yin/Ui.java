@@ -1,17 +1,16 @@
 package yin;
 
-import java.util.Scanner;
 import java.util.List;
 
 /**
- * Handles all user-facing messages and formatting (banners, lists, confirmations, errors).
- *
- * <p>This class centralizes console output so that presentation logic is kept
- * separate from command parsing/execution. It prints standardized lines,
- * headings, and task-related confirmations.</p>
+ * Handles all user messages and formatting such as banners, lists,
+ * confirmations, and errors.
+ * This class centralises console output so presentation logic
+ * is kept separate from command execution.
+ * It prints standard lines, headings, and task confirmations.
  */
 public class Ui {
-    /** Two-space left indentation used for all console lines. */
+    /** Two space left indentation used for all console lines. */
     private static final String INDENT = "  ";
     /** Horizontal divider used to frame sections of output. */
     private static final String LINE =
@@ -52,7 +51,7 @@ public class Ui {
     /**
      * Prints a confirmation that a task has been added, and shows the new list size.
      *
-     * @param t    the task that was added
+     * @param t the task that was added
      * @param size the total number of tasks after the addition
      */
     public void showAdded(Task t, int size) {
@@ -66,7 +65,7 @@ public class Ui {
     /**
      * Prints a confirmation that a task has been removed, and shows the new list size.
      *
-     * @param t    the task that was removed
+     * @param t the task that was removed
      * @param size the total number of tasks after the removal
      */
     public void showRemoved(Task t, int size) {

@@ -1,7 +1,7 @@
 package yin;
 
 /**
- * A {@link Command} that marks a task in the {@link TaskList} as done.
+ * A Command that marks a task in the TaskList as done.
  */
 public class MarkCommand extends Command {
     /** Zero-based index of the task to mark. */
@@ -20,8 +20,8 @@ public class MarkCommand extends Command {
      * Executes this command: validates the index, marks the task as done,
      * displays a confirmation, and saves to storage.
      *
-     * @param tasks   the task list to update
-     * @param ui      the user interface to display feedback
+     * @param tasks the task list to update
+     * @param ui the user interface to display feedback
      * @param storage the storage to persist the updated task list
      * @throws YinException if the index is invalid
      */

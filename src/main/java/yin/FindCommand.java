@@ -3,7 +3,7 @@ package yin;
 import java.util.List;
 
 /**
- * Command that finds tasks whose descriptions contain a given keyword (case-insensitive).
+ * Command that finds tasks with descriptions that contain a given keyword (case-insensitive).
  */
 public class FindCommand extends Command {
     private final String word;

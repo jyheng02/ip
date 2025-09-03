@@ -10,16 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Persists and retrieves {@link Task} data from the local filesystem.
- *
- * <p>Tasks are stored one per line in a simple pipe-delimited format:</p>
- * <ul>
- *   <li>{@code T | 0|1 | description}</li>
- *   <li>{@code D | 0|1 | description | byDateTime}</li>
- *   <li>{@code E | 0|1 | description | fromDateTime | toDateTime}</li>
- * </ul>
- * <p>Date-time fields are serialized using {@link DateTimes#formatStorage(java.time.LocalDateTime)}
- * and parsed using {@link DateTimes#parseFlexible(String)}.</p>
+ * Persists and retrieves Task data from the local filesystem.
+ * Tasks are stored one per line in a simple pipe-delimited format:
+ * T | 0|1 | description
+ * D | 0|1 | description | byDateTime
+ * E | 0|1 | description | fromDateTime | toDateTime
+ * Date-time fields are serialised using a storage formatter,
+ * and parsed using DateTimes.parseFlexible(String).
  */
 public class Storage {
     /** Path to the data file used for persistence. */
@@ -47,9 +44,9 @@ public class Storage {
     }
 
     /**
-     * Serializes a {@link Task} into the storage line format.
+     * Serialises a Task into the storage line format.
      *
-     * @param t the task to serialize
+     * @param t the task to serialise
      * @return a single-line, pipe-delimited representation of the task
      */
     private String serialise(Task t) {
@@ -72,10 +69,10 @@ public class Storage {
 
     /**
      * Loads tasks from disk.
-     *
-     * <p>If the data file or its parent directories do not exist, they are created and
-     * an empty list is returned (first run behavior). Malformed lines are skipped.
-     * Tasks marked as done in storage are marked accordingly in memory.</p>
+     * If the data file or its parent directories do not exist,
+     * they are created and an empty list is returned (first run behavior).
+     * Malformed lines are skipped.
+     * Tasks marked as done in storage are marked accordingly in memory.
      *
      * @return a list of tasks loaded from the data file (possibly empty)
      */
@@ -138,8 +135,7 @@ public class Storage {
 
     /**
      * Saves the given tasks to disk, overwriting the file contents.
-     *
-     * <p>Creates the parent directory and data file if they do not already exist.</p>
+     * Creates the parent directory and data file if they do not already exist.
      *
      * @param tasks the tasks to persist
      */

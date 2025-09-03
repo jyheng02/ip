@@ -1,6 +1,11 @@
 plugins {
     id 'java'
     id 'application'
+    id 'checkstyle'
+}
+
+checkstyle {
+    toolVersion = '11.0.1'
 }
 
 group = 'yin'
@@ -37,4 +42,12 @@ tasks.named('run') {
 
 test {
     useJUnit()
+}
+
+checkstyle {
+    toolVersion = '11.0.1'
+    configFile = file('C:/Users/hjyad/ip/config/checkstyle/checkstyle.xml')
+    configProperties = [
+            'suppressions.file': file('C:/Users/hjyad/ip/config/checkstyle/suppressions.xml').absolutePath
+    ]
 }

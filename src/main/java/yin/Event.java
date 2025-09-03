@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 /**
  * Represents an event task that occurs over a period of time,
- * starting at {@code from} and ending at {@code to}.
+ * starting at from and ending at to.
  */
 public class Event extends Task {
     /** The start datetime of the event. */
@@ -18,8 +18,8 @@ public class Event extends Task {
      * Creates a new event task with the given description and time range.
      *
      * @param description the description of the event
-     * @param from        the start datetime
-     * @param to          the end datetime
+     * @param from the start datetime
+     * @param to the end datetime
      */
     public Event(String description, LocalDateTime from, LocalDateTime to) {
         super(description);
@@ -47,12 +47,11 @@ public class Event extends Task {
 
     /**
      * Checks if this event occurs on the given date.
-     *
-     * <p>Returns {@code true} if the given date is within the inclusive range
-     * from {@link #from} to {@link #to}.</p>
+     * Returns true if the given date is within the inclusive range
+     * from start datetime (from) to end datetime (to).
      *
      * @param date the date to check
-     * @return {@code true} if the event occurs on that date
+     * @return true if the event occurs on that date
      */
     @Override
     public boolean occursOn(LocalDate date) {

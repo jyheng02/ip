@@ -8,14 +8,11 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 
 /**
- * Utility class for parsing and formatting {@link LocalDateTime} objects used in tasks.
- *
- * <p>Supports multiple flexible input formats for parsing, and provides distinct
- * formatters for user display and storage serialization.</p>
+ * Utility class for parsing and formatting LocalDateTime objects used in tasks.
+ * Supports multiple flexible input formats for parsing,
+ * and provides distinct formatters for user display and storage serialisation.
  */
 public class DateTimes {
-    /** Hidden constructor; this class should not be instantiated. */
-    private DateTimes() {}
 
     /** Accepted input formats for parsing user-provided date/time strings. */
     private static final List<DateTimeFormatter> INPUTS = List.of(
@@ -25,22 +22,24 @@ public class DateTimes {
             DateTimeFormatter.ofPattern("d/M/yyyy")
     );
 
-    /** Formatter for display: {@code "MMM d yyyy"} (no time). */
+    /** Formatter for display: "MMM d yyyy" (no time). */
     private static final DateTimeFormatter DISPLAY_DATE = DateTimeFormatter.ofPattern("MMM d yyyy");
 
-    /** Formatter for display: {@code "MMM d yyyy, h:mma"} (with time). */
+    /** Formatter for display: "MMM d yyyy, h:mma" (with time). */
     private static final DateTimeFormatter DISPLAY_DATETIME =
             DateTimeFormatter.ofPattern("MMM d yyyy, h:mma");
 
     /** Formatter for storage (ISO local date-time). */
     private static final DateTimeFormatter STORAGE = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
+    /** Hidden constructor; this class should not be instantiated. */
+    private DateTimes() {}
+
     /**
-     * Parses a user-provided string into a {@link LocalDateTime}.
-     *
-     * <p>Tries each of the accepted input formats. If only a date is provided,
-     * it defaults the time to midnight. If none of the formats match,
-     * it falls back to {@link LocalDateTime#parse(CharSequence)}.</p>
+     * Parses a user-provided string into a LocalDateTime.
+     * Tries each of the accepted input formats. If only a date is provided,
+     * it defaults the time to midnight.
+     * If none of the formats match, it falls back to LocalDateTime.parse(string).
      *
      * @param text the input string
      * @return parsed date-time
@@ -65,9 +64,8 @@ public class DateTimes {
 
     /**
      * Formats a date-time for user display.
-     *
-     * <p>If the time is exactly midnight, only the date is shown.
-     * Otherwise, both date and time are shown.</p>
+     * If the time is exactly midnight, only the date is shown.
+     * Otherwise, both date and time are shown.
      *
      * @param dt the date-time to format
      * @return formatted string suitable for display
