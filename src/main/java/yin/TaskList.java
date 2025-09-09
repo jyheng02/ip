@@ -24,6 +24,7 @@ public class TaskList {
      * @param initial initial tasks to copy into this list
      */
     public TaskList(List<Task> initial) {
+        assert initial != null : "Initial task list must not be null";
         this.list = new ArrayList<>(initial);
     }
 
@@ -138,6 +139,7 @@ public class TaskList {
      * @return the updated task
      */
     public Task mark(int index) {
+        assert index >= 0 && index < list.size() : "Index out of bounds in mark()";
         Task task = list.get(index);
         task.mark();
         return task;
@@ -150,6 +152,7 @@ public class TaskList {
      * @return the updated task
      */
     public Task unmark(int index) {
+        assert index >= 0 && index < list.size() : "Index out of bounds in unmark()";
         Task task = list.get(index);
         task.unmark();
         return task;
@@ -162,6 +165,7 @@ public class TaskList {
      * @return the deleted task
      */
     public Task delete(int index) {
+        assert index >= 0 && index < list.size() : "Index out of bounds in delete()";
         return list.remove(index);
     }
 }

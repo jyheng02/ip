@@ -1,5 +1,6 @@
 package yin;
 
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -31,6 +32,8 @@ public class Yin {
     public static void main(String[] args) {
 
         // load tasks from disk (first run creates file/folder).
+        List<Task> loaded = storage.load();
+        assert loaded != null : "Storage.load() should not return null";
         tasks = new TaskList(storage.load());
 
         ui.showWelcome();
@@ -50,6 +53,7 @@ public class Yin {
 
                 // parse raw command into a command object.
                 Command c = Parser.parse(command);
+                assert c != null : "Parser should never return null command";
 
                 // execute command against state; implementation may persist via storage.
                 c.execute(tasks, ui, storage);

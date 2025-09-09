@@ -1,5 +1,7 @@
 package yin;
 
+import java.util.List;
+
 /**
  * Core class that connects the GUI to the backend logic.
  * Manages the task list and storage, and processes user input
@@ -16,6 +18,8 @@ public class AppCore {
      */
     public AppCore() {
         this.storage = new Storage("data/Yin.txt");
+        List<Task> loaded = storage.load();
+        assert loaded != null : "Storage.load() should not return null";
         this.tasks = new TaskList(storage.load());
     }
 
@@ -39,6 +43,7 @@ public class AppCore {
         FxUi fxUi = new FxUi(); // GUI-friendly Ui that buffers output
         try {
             Command c = Parser.parse(input);
+            assert c != null : "Parser should never return null command";
             c.execute(tasks, fxUi, storage);
             isExited = c.isExit();
         } catch (YinException e) {
@@ -55,6 +60,9 @@ public class AppCore {
     public String getWelcome() {
         FxUi fxUi = new FxUi();
         fxUi.showWelcome();
-        return fxUi.flush();
+        String welcome = fxUi.flush();
+        assert welcome != null && !welcome.isBlank()
+                : "Welcome message should not be null or blank";
+        return welcome;
     }
 }

@@ -64,6 +64,7 @@ public class FxUi extends Ui {
      */
     @Override
     public void showAdded(Task t, int size) {
+        assert t != null : "Added task should not be null";
         addLine("Added: " + t);
         addLine("Now you have " + size + " tasks.");
     }
@@ -76,6 +77,7 @@ public class FxUi extends Ui {
      */
     @Override
     public void showRemoved(Task t, int size) {
+        assert t != null : "Removed task should not be null";
         addLine("Removed: " + t);
         addLine("Now you have " + size + " tasks.");
     }
@@ -87,6 +89,7 @@ public class FxUi extends Ui {
      */
     @Override
     public void showList(List<Task> tasks) {
+        assert tasks != null : "List of tasks should not be null";
         addLine("Here are your tasks:");
         for (int i = 0; i < tasks.size(); i++) {
             addLine((i + 1) + ". " + tasks.get(i));
@@ -100,6 +103,7 @@ public class FxUi extends Ui {
      */
     @Override
     public void showMarked(Task t) {
+        assert t != null : "Marked task should not be null";
         addLine("Marked done: " + t);
     }
 
@@ -110,6 +114,7 @@ public class FxUi extends Ui {
      */
     @Override
     public void showUnmarked(Task t) {
+        assert t != null : "Unmarked task should not be null";
         addLine("Unmarked: " + t);
     }
 
@@ -120,6 +125,7 @@ public class FxUi extends Ui {
      */
     @Override
     public void showMatches(List<Task> matches) {
+        assert matches != null : "Match list should not be null";
         if (matches.isEmpty()) {
             addLine("No matches found.");
             return;

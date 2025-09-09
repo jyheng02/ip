@@ -50,15 +50,22 @@ public class Storage {
      * @return a single-line, pipe-delimited representation of the task
      */
     private String serialise(Task t) {
+        assert t != null : "Cannot serialise a null task";
         String done = t.isDone() ? "1" : "0";
         if (t instanceof Todo) {
             return String.join(" | ", "T", done, t.getDescription());
         } else if (t instanceof Deadline) {
             Deadline d = (Deadline) t;
+            String byStr = DateTimes.formatStorage(d.getBy());
+            assert byStr != null : "Deadline datetime format should not be null";
             return String.join(" | ", "D", done,
                     d.getDescription(), DateTimes.formatStorage(d.getBy()));
         } else if (t instanceof Event) {
             Event e = (Event) t;
+            String fromStr = DateTimes.formatStorage(e.getFrom());
+            String toStr = DateTimes.formatStorage(e.getTo());
+            assert fromStr != null && toStr != null
+                    : "Event datetime format should not be null";
             return String.join(" | ", "E", done,
                     e.getDescription(),
                     DateTimes.formatStorage(e.getFrom()),
@@ -107,6 +114,7 @@ public class Storage {
                         continue;
                     }
                     LocalDateTime by = DateTimes.parseFlexible(p[3]);
+                    assert by != null : "Parsed deadline datetime should not be null";
                     t = new Deadline(desc, by);
                     break;
                 case "E":
@@ -115,6 +123,8 @@ public class Storage {
                     }
                     LocalDateTime from = DateTimes.parseFlexible(p[3]);
                     LocalDateTime to = DateTimes.parseFlexible(p[4]);
+                    assert from != null && to != null
+                            : "Parsed event datetime should not be null";
                     t = new Event(desc, from, to);
                     break;
                 default:
@@ -140,10 +150,12 @@ public class Storage {
      * @param tasks the tasks to persist
      */
     public void save(List<Task> tasks) {
+        assert tasks != null : "Tasks list to save must not be null";
         try {
             ensureParentExists();
             List<String> lines = new ArrayList<>();
             for (Task t : tasks) {
+                assert t != null : "Tasks list contains a null task";
                 lines.add(serialise(t));
             }
             Files.write(file, lines,

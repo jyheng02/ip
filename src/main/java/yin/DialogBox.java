@@ -36,6 +36,9 @@ public class DialogBox extends HBox {
             fxmlLoader.setController(this);
             fxmlLoader.setRoot(this);
             fxmlLoader.load();
+            assert dialog != null : "Dialog label should have been injected by FXML";
+            assert displayPicture != null
+                    : "Display picture should have been injected by FXML";
         } catch (IOException e) {
             e.printStackTrace();
         }
