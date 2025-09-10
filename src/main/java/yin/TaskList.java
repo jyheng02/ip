@@ -93,6 +93,13 @@ public class TaskList {
     }
 
     /**
+     * Removes all tasks from the list.
+     */
+    public void clear() { // [NEW]
+        list.clear();
+    }
+
+    /**
      * Creates and adds a new Todo task.
      *
      * @param description the description of the todo

@@ -21,6 +21,8 @@ import java.util.List;
 public class Storage {
     /** Path to the data file used for persistence. */
     private final Path file;
+    /** Path to the archive file used to store archived tasks. */
+    private final Path archiveFile;
 
     /**
      * Creates a storage backed by the given relative file path.
@@ -29,6 +31,9 @@ public class Storage {
      */
     public Storage(String relativePath) {
         this.file = Paths.get(relativePath);
+        Path parent = this.file.getParent();
+        this.archiveFile = (parent == null) ? Paths.get("Archive.txt")
+                : parent.resolve("Archive.txt");
     }
 
     /**
@@ -162,6 +167,30 @@ public class Storage {
                     StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
             System.err.println("Save failed: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Appends the given tasks to the archive file, creating it if needed.
+     *
+     * @param tasks the tasks to append to the archive
+     * @throws YinException if an I/O error occurs while writing
+     */
+    public void appendArchive(List<Task> tasks) throws YinException { // [NEW]
+        try {
+            ensureParentExists();
+            List<String> lines = new ArrayList<>();
+            for (Task t : tasks) {
+                lines.add(serialise(t));
+            }
+            Files.write(
+                    archiveFile,
+                    lines,
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.APPEND
+            );
+        } catch (IOException e) {
+            throw new YinException("Archiving failed: " + e.getMessage());
         }
     }
 }

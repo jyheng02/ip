@@ -151,6 +151,22 @@ public final class Parser {
             return new FindCommand(collapseSpaces(tail));
         }
 
+        case "archive": { // [NEW]
+            if (tail.isBlank()) {
+                throw new YinException("archive needs a scope: \"archive all\" or \"archive done\"");
+            }
+            String arg = tail.trim().toLowerCase();
+            switch (arg) {
+            case "all":
+                return new ArchiveCommand(ArchiveCommand.Scope.ALL);
+            case "done":
+                return new ArchiveCommand(ArchiveCommand.Scope.DONE);
+            default:
+                throw new YinException("Unknown archive scope: " + arg
+                        + "\n    Use: \"archive all\" or \"archive done\"");
+            }
+        }
+
         default:
             return new UnknownCommand("Give me a command first >:("
                     + "\n    Try: todo, deadline, event, list, mark, unmark, delete or bye.");

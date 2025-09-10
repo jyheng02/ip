@@ -135,4 +135,20 @@ public class FxUi extends Ui {
             addLine((i + 1) + ". " + matches.get(i));
         }
     }
+
+    /**
+     * Displays a summary message after archiving tasks.
+     * If no tasks were archived, the message indicates that explicitly.
+     *
+     * @param count the number of tasks that were archived
+     * @param scope the textual scope of archiving, e.g. "all" or "done"
+     */
+    @Override
+    public void showArchived(int count, String scope) { // [NEW]
+        if (count == 0) {
+            addLine("Nothing to archive for scope: " + scope + ".");
+        } else {
+            addLine("Archived " + count + " task(s) (" + scope + ").");
+        }
+    }
 }
