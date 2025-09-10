@@ -52,32 +52,32 @@ public class Storage {
     private String serialise(Task t) {
         assert t != null : "Cannot serialise a null task";
         String done = t.isDone() ? "1" : "0";
+
         if (t instanceof Todo) {
             return String.join(" | ", "T", done, t.getDescription());
+
         } else if (t instanceof Deadline) {
             Deadline d = (Deadline) t;
             String byStr = DateTimes.formatStorage(d.getBy());
             assert byStr != null : "Deadline datetime format should not be null";
-            return String.join(" | ", "D", done,
-                    d.getDescription(), DateTimes.formatStorage(d.getBy()));
+            return String.join(" | ", "D", done, d.getDescription(), byStr);
+
         } else if (t instanceof Event) {
             Event e = (Event) t;
             String fromStr = DateTimes.formatStorage(e.getFrom());
             String toStr = DateTimes.formatStorage(e.getTo());
             assert fromStr != null && toStr != null
                     : "Event datetime format should not be null";
-            return String.join(" | ", "E", done,
-                    e.getDescription(),
-                    DateTimes.formatStorage(e.getFrom()),
-                    DateTimes.formatStorage(e.getTo()));
+            return String.join(" | ", "E", done, e.getDescription(), fromStr, toStr);
         }
+
         return String.join(" | ", "T", done, t.getDescription());
     }
 
     /**
      * Loads tasks from disk.
      * If the data file or its parent directories do not exist,
-     * they are created and an empty list is returned (first run behavior).
+     * they are created and an empty list is returned (first run behaviour).
      * Malformed lines are skipped.
      * Tasks marked as done in storage are marked accordingly in memory.
      *

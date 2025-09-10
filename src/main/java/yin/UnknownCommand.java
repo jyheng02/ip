@@ -10,17 +10,17 @@ public class UnknownCommand extends Command {
     /**
      * Creates a new UnknownCommand with the message to show.
      *
-     * @param message the error message to explain what went wrong
+     * @param message the error message explaining what went wrong
      */
     public UnknownCommand(String message) {
         this.message = message;
     }
 
     /**
-     * Executes this command, since it's unknown, it always throws an exception.
+     * Executes this command. Since it is unknown, it always throws an exception.
      *
      * @param tasks the task list (not used here)
-     * @param ui the ui for showing messages (not used here)
+     * @param ui the UI for showing messages (not used here)
      * @param storage the storage (not used here)
      * @throws YinException always thrown with the error message
      */

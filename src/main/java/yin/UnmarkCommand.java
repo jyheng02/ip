@@ -21,7 +21,7 @@ public class UnmarkCommand extends Command {
      * and updates storage.
      *
      * @param tasks the task list
-     * @param ui the ui for showing messages
+     * @param ui the UI for showing messages
      * @param storage the storage to save changes
      * @throws YinException if the index is out of range
      */
