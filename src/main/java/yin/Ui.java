@@ -139,4 +139,20 @@ public class Ui {
         }
         showLine();
     }
+
+    /**
+     * Prints a summary after archiving.
+     *
+     * @param count number of tasks archived
+     * @param scope textual scope used (e.g., "all", "done")
+     */
+    public void showArchived(int count, String scope) { // [NEW]
+        showLine();
+        if (count == 0) {
+            System.out.println("    Nothing to archive for scope: " + scope + ".");
+        } else {
+            System.out.println("    Archived " + count + " task(s) (" + scope + ").");
+        }
+        showLine();
+    }
 }
