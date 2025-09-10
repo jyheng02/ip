@@ -16,7 +16,7 @@ public class DateTimes {
 
     /** Accepted input formats for parsing user-provided date/time strings. */
     private static final List<DateTimeFormatter> INPUTS = List.of(
-            DateTimeFormatter.ofPattern("yyy-MM-dd HHmm"),
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm"),
             DateTimeFormatter.ofPattern("yyyy-MM-dd"),
             DateTimeFormatter.ofPattern("d/M/yyyy HHmm"),
             DateTimeFormatter.ofPattern("d/M/yyyy")
@@ -46,20 +46,24 @@ public class DateTimes {
      * @throws DateTimeParseException if parsing fails
      */
     public static LocalDateTime parseFlexible(String text) throws DateTimeParseException {
-        String string = text.trim();
-        for (DateTimeFormatter formatter : INPUTS) {
+        String s = text.trim();
+
+        for (DateTimeFormatter f : INPUTS) {
             try {
-                return LocalDateTime.parse(string, formatter);
+                return LocalDateTime.parse(s, f);
             } catch (DateTimeParseException ignored) {
-                try {
-                    LocalDate d = LocalDate.parse(string, formatter);
-                    return LocalDateTime.of(d, LocalTime.MIDNIGHT);
-                } catch (DateTimeParseException ignored2) {
-                    // try next formatter
-                }
+                // try as date-only with midnight
+            }
+            try {
+                LocalDate d = LocalDate.parse(s, f);
+                return LocalDateTime.of(d, LocalTime.MIDNIGHT);
+            } catch (DateTimeParseException ignored) {
+                // try next formatter
             }
         }
-        return LocalDateTime.parse(string);
+
+        // Final fallback: JDK default parsing (e.g., ISO)
+        return LocalDateTime.parse(s);
     }
 
     /**

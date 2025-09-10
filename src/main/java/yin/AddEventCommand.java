@@ -31,7 +31,7 @@ public class AddEventCommand extends Command {
     }
 
     /**
-     * Executes this command: parses the datetimes, creates the event task,
+     * Executes this command: validates inputs, parses datetimes, creates the event task,
      * adds it to the task list, displays a confirmation, and saves to storage.
      *
      * @param tasks the task list to add the event into
@@ -41,21 +41,58 @@ public class AddEventCommand extends Command {
      */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws YinException {
-        if (description == null || description.isBlank()
-                || fromRaw == null || fromRaw.isBlank()
-                || toRaw == null || toRaw.isBlank()) {
+        validateInput();
+
+        LocalDateTime from = parseDate(fromRaw, "start");
+        LocalDateTime to = parseDate(toRaw, "end");
+        if (to.isBefore(from)) {
+            throw new YinException("The end date/time cannot be before start date/time!");
+        }
+
+        Task task = tasks.addEvent(normalise(description), from, to);
+        ui.showAdded(task, tasks.size());
+        storage.save(tasks.asList());
+    }
+
+    /**
+     * Validates that description, start, and end inputs are present.
+     *
+     * @throws YinException if any field is missing or blank
+     */
+    private void validateInput() throws YinException {
+        boolean badDescription = (description == null) || description.isBlank();
+        boolean badFrom = (fromRaw == null) || fromRaw.isBlank();
+        boolean badTo = (toRaw == null) || toRaw.isBlank();
+        if (badDescription || badFrom || badTo) {
             throw new YinException("Please feed me a proper input man..."
-                   + "\n    Event format: event <desc> /from <start> /to <end>");
+                    + "\n    Event format: event <desc> /from <start> /to <end>");
         }
+    }
+
+    /**
+     * Parses a single datetime string with a friendly error if parsing fails.
+     *
+     * @param raw the raw datetime string
+     * @param which label indicating which datetime is being parsed (e.g., \"start\" or \"end\")
+     * @return the parsed LocalDateTime
+     * @throws YinException if parsing fails
+     */
+    private LocalDateTime parseDate(String raw, String which) throws YinException {
         try {
-            LocalDateTime from = DateTimes.parseFlexible(fromRaw);
-            LocalDateTime to = DateTimes.parseFlexible(toRaw);
-            Task task = tasks.addEvent(description.trim().replaceAll("\\s+", " "), from, to);
-            ui.showAdded(task, tasks.size());
-            storage.save(tasks.asList());
+            return DateTimes.parseFlexible(raw);
         } catch (Exception e) {
-            throw new YinException("I couldn't parse one of the dates/times :("
-                   + "\n    Try formats like 2019-10-15 or 2/12/2019 1800.");
+            throw new YinException("I couldn't parse the " + which + " date/time :("
+                    + "\n    Try formats like 2019-10-15 or 2/12/2019 1800.");
         }
+    }
+
+    /**
+     * Normalises whitespace in a string by trimming and collapsing spaces.
+     *
+     * @param s the input string
+     * @return the normalised string
+     */
+    private static String normalise(String s) {
+        return s.trim().replaceAll("\\s+", " ");
     }
 }

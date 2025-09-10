@@ -84,7 +84,7 @@ public class Ui {
      *
      * @param tasks tasks to display, in display order
      */
-    public void showList(java.util.List<Task> tasks) {
+    public void showList(List<Task> tasks) {
         assert tasks != null : "Tasks list must not be null";
         showLine();
         System.out.println("    Here are the tasks in your list:");

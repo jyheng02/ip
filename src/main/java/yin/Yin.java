@@ -7,7 +7,7 @@ import java.util.Scanner;
  * Entry point of the Yin CLI application.
  * It wires together the Storage, TaskList, and Ui components,
  * then runs a loop that parses user input into Command objects (via Parser) and executes them.
- * The loop terminates when a command signals exit (e.g. bye command)
+ * The loop terminates when a command signals exit (e.g. bye command).
  */
 public class Yin {
     /** Backing store for persisting tasks to disk. */
@@ -27,42 +27,41 @@ public class Yin {
      * and executes it with the current TaskList, Ui, and Storage.
      * Any YinException thrown by parsing or execution is caught and shown through Ui.
      *
-     * @param args Command-line arguments (unused).
+     * @param args command-line arguments (unused)
      */
     public static void main(String[] args) {
-
         // load tasks from disk (first run creates file/folder).
         List<Task> loaded = storage.load();
         assert loaded != null : "Storage.load() should not return null";
-        tasks = new TaskList(storage.load());
+        tasks = new TaskList(loaded);
 
         ui.showWelcome();
 
-        Scanner scan = new Scanner(System.in);
+        try (Scanner scanner = new Scanner(System.in)) {
+            while (true) {
+                String input = scanner.nextLine();
+                String command = input.trim();
 
-        while (true) {
-            String input = scan.nextLine();
-            String command = input.trim();
+                try {
+                    // handle whitespace-only input.
+                    if (command.isEmpty()) {
+                        throw new YinException("input is empty >:("
+                                + "\n    Give me something please.");
+                    }
 
-            try {
-                // handle whitespace-only input.
-                if (command.isEmpty()) {
-                    throw new YinException("input is empty >:("
-                           + "\n    Give me something please.");
+                    // parse raw command into a command object.
+                    Command c = Parser.parse(command);
+                    assert c != null : "Parser should never return null command";
+
+                    // execute command against state; implementation may persist via storage.
+                    c.execute(tasks, ui, storage);
+
+                    if (c.isExit()) {
+                        return;
+                    }
+                } catch (YinException e) {
+                    ui.showError(e.getMessage());
                 }
-
-                // parse raw command into a command object.
-                Command c = Parser.parse(command);
-                assert c != null : "Parser should never return null command";
-
-                // execute command against state; implementation may persist via storage.
-                c.execute(tasks, ui, storage);
-
-                if (c.isExit()) {
-                    return;
-                }
-            } catch (YinException e) {
-                ui.showError(e.getMessage());
             }
         }
     }
