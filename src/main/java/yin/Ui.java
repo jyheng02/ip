@@ -43,6 +43,7 @@ public class Ui {
      * @param msg the error message to display
      */
     public void showError(String msg) {
+        assert msg != null : "Error message must not be null";
         showLine();
         System.out.println("    " + msg);
         showLine();
@@ -55,6 +56,7 @@ public class Ui {
      * @param size the total number of tasks after the addition
      */
     public void showAdded(Task t, int size) {
+        assert t != null : "Added task must not be null";
         showLine();
         System.out.println("    Say less. I've added this task:");
         System.out.println("      " + t);
@@ -69,6 +71,7 @@ public class Ui {
      * @param size the total number of tasks after the removal
      */
     public void showRemoved(Task t, int size) {
+        assert t != null : "Removed task must not be null";
         showLine();
         System.out.println("    Say less. I've removed this task:");
         System.out.println("      " + t);
@@ -82,6 +85,7 @@ public class Ui {
      * @param tasks tasks to display, in display order
      */
     public void showList(java.util.List<Task> tasks) {
+        assert tasks != null : "Tasks list must not be null";
         showLine();
         System.out.println("    Here are the tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
@@ -96,6 +100,7 @@ public class Ui {
      * @param t the task that was marked
      */
     public void showMarked(Task t) {
+        assert t != null : "Marked task must not be null";
         showLine();
         System.out.println("    Solid, I've marked this task as done:");
         System.out.println("      " + t);
@@ -108,6 +113,7 @@ public class Ui {
      * @param t the task that was unmarked
      */
     public void showUnmarked(Task t) {
+        assert t != null : "Unmarked task must not be null";
         showLine();
         System.out.println("    Skill issue, I've marked this task as not done yet:");
         System.out.println("      " + t);
@@ -120,6 +126,7 @@ public class Ui {
      * @param matches tasks that matched (may be empty)
      */
     public void showMatches(List<Task> matches) {
+        assert matches != null : "Matches list must not be null";
         showLine();
         if (matches.isEmpty()) {
             System.out.println("    No matches found.");

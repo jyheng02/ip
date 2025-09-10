@@ -1,7 +1,7 @@
 package yin;
 
 /**
- * Parses raw user input into {@link Command} objects.
+ * Parses raw user input into Command objects.
  * This utility class supports commands such as todo, deadline, event,
  * list, mark, unmark, delete, and bye.
  * For invalid inputs, it either throws a YinException or produces an
