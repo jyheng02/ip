@@ -26,14 +26,14 @@ public class Ui {
     /** Prints the welcome banner shown at application start. */
     public void showWelcome() {
         showLine();
-        System.out.println("    Hello! I'm Yin\n    How can I be of assistance?");
+        System.out.println("Hello! I'm Yin.\nHow can I be of assistance?");
         showLine();
     }
 
     /** Prints the exit message shown before terminating the app. */
     public void showExit() {
         showLine();
-        System.out.println("    See you later alligator.");
+        System.out.println("See you later alligator.");
         showLine();
     }
 
@@ -45,7 +45,7 @@ public class Ui {
     public void showError(String msg) {
         assert msg != null : "Error message must not be null";
         showLine();
-        System.out.println("    " + msg);
+        System.out.println(msg);
         showLine();
     }
 
@@ -58,9 +58,8 @@ public class Ui {
     public void showAdded(Task t, int size) {
         assert t != null : "Added task must not be null";
         showLine();
-        System.out.println("    Say less. I've added this task:");
-        System.out.println("      " + t);
-        System.out.println("    Now you have " + size + " tasks in the list.");
+        System.out.println("I've added this task:\n" + t);
+        System.out.println("\nNow you have " + size + " tasks in the list.");
         showLine();
     }
 
@@ -73,9 +72,8 @@ public class Ui {
     public void showRemoved(Task t, int size) {
         assert t != null : "Removed task must not be null";
         showLine();
-        System.out.println("    Say less. I've removed this task:");
-        System.out.println("      " + t);
-        System.out.println("    Now you have " + size + " tasks in the list.");
+        System.out.println("I've removed this task:\n" + t);
+        System.out.println("\nNow you have " + size + " tasks in the list.");
         showLine();
     }
 
@@ -87,9 +85,13 @@ public class Ui {
     public void showList(List<Task> tasks) {
         assert tasks != null : "Tasks list must not be null";
         showLine();
-        System.out.println("    Here are the tasks in your list:");
-        for (int i = 0; i < tasks.size(); i++) {
-            System.out.println("    " + (i + 1) + "." + tasks.get(i));
+        if (tasks.isEmpty()) {
+            System.out.println("There are no tasks in the list.");
+        } else {
+            System.out.println("Here are the tasks in your list:");
+            for (int i = 0; i < tasks.size(); i++) {
+                System.out.println("    " + (i + 1) + "." + tasks.get(i));
+            }
         }
         showLine();
     }
@@ -102,7 +104,7 @@ public class Ui {
     public void showMarked(Task t) {
         assert t != null : "Marked task must not be null";
         showLine();
-        System.out.println("    Solid, I've marked this task as done:");
+        System.out.println("Solid, I've marked this task as done:");
         System.out.println("      " + t);
         showLine();
     }
@@ -115,7 +117,7 @@ public class Ui {
     public void showUnmarked(Task t) {
         assert t != null : "Unmarked task must not be null";
         showLine();
-        System.out.println("    Skill issue, I've marked this task as not done yet:");
+        System.out.println("I've marked this task as not done yet:");
         System.out.println("      " + t);
         showLine();
     }
@@ -129,11 +131,11 @@ public class Ui {
         assert matches != null : "Matches list must not be null";
         showLine();
         if (matches.isEmpty()) {
-            System.out.println("    No matches found.");
+            System.out.println("No matches found.");
             showLine();
             return;
         }
-        System.out.println("    Here are the matching tasks in your list:");
+        System.out.println("Here are the matching tasks in your list:");
         for (int i = 0; i < matches.size(); i++) {
             System.out.println("    " + (i + 1) + "." + matches.get(i));
         }
@@ -149,9 +151,9 @@ public class Ui {
     public void showArchived(int count, String scope) { // [NEW]
         showLine();
         if (count == 0) {
-            System.out.println("    Nothing to archive for scope: " + scope + ".");
+            System.out.println("Nothing to archive for scope: " + scope + ".");
         } else {
-            System.out.println("    Archived " + count + " task(s) (" + scope + ").");
+            System.out.println("Archived " + count + " task(s) (" + scope + ").");
         }
         showLine();
     }

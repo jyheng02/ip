@@ -29,6 +29,8 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
+            stage.setMinWidth(380);
+            stage.setMinHeight(520);
             stage.setTitle("Yin");
             // Inject the AppCore into the controller
             fxmlLoader.<MainWindow>getController().setAppCore(appCore);

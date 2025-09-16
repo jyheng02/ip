@@ -1,20 +1,37 @@
 .label {
     background:white;
     -fx-background-color: background;
-    -fx-border-color: #d55e00 #009e73 #cc79a7 #0072b2;
-    -fx-border-width: 2px;
-    -fx-background-radius: 1em 1em 0 1em;
-    -fx-border-radius: 1em 1em 0 1em;
-    -fx-text-fill: ladder(background, white 49%, black 50%);
+    -fx-border-color: rgba(255,255,255,0.18);
+    -fx-border-width: 1.5px;
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-text-fill: ladder(background, white 55%, #e6e6e6 70%, white 0%);
+    -fx-padding: 8 12;
+    -fx-line-spacing: 2;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 8, 0.2, 0, 1);
 }
 
+/* User bubble */
+.user-label {
+    background: #2A6F77;
+    -fx-background-radius: 14 14 0 14;
+    -fx-border-radius: 14 14 0 14;
+    -fx-border-color: #3B8088;
+}
 
+/* Bot bubble */
 .reply-label {
-    -fx-background-radius: 1em 1em 1em 0;
-    -fx-border-radius: 1em 1em 1em 0;
+    background: #3b4252;
+    -fx-background-radius: 14 14 14 0;
+    -fx-border-radius: 14 14 14 0;
+    -fx-border-color: #4c566a;
+}
+/* Error bubble */
+.error-label {
+    background: #7a2636;
+    -fx-border-color: #a64b5f;
 }
 
-/* Paste this below reply-label */
 .add-label {
     -fx-background-color: yellow;
 }

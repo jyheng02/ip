@@ -40,7 +40,7 @@ public final class Parser {
     public static Command parse(String fullCommand) throws YinException {
         if (fullCommand == null || fullCommand.trim().isEmpty()) {
             throw new YinException("input is empty >:("
-                    + "\n    Give me something please.");
+                    + "\nGive me something please.");
         }
 
         String command = fullCommand.trim();
@@ -61,7 +61,7 @@ public final class Parser {
         case "todo": {
             if (tail.isBlank()) {
                 throw new YinException("todo needs a description!"
-                        + "\n    e.g.\"todo borrow book\"");
+                        + "\ne.g.\"todo borrow book\"");
             }
             return new AddTodoCommand(collapseSpaces(tail));
         }
@@ -69,19 +69,19 @@ public final class Parser {
         case "deadline": {
             if (tail.isBlank()) {
                 throw new YinException("Give me a proper input please..."
-                        + "\n    Deadline format: deadline <desc> /by <when>");
+                        + "\nDeadline format: deadline <desc> /by <when>");
             }
             String body = tail.trim();
             int separator = body.indexOf("/by");
             if (separator == -1) {
                 throw new YinException("Give me a proper input please..."
-                        + "\n    Deadline format: deadline <desc> /by <when>");
+                        + "\nDeadline format: deadline <desc> /by <when>");
             }
             String desc = body.substring(0, separator).trim();
             String by = body.substring(separator + 3).trim();
             if (desc.isEmpty() || by.isEmpty()) {
                 throw new YinException("Give me a proper input please..."
-                        + "\n    Deadline format: deadline <desc> /by <when>");
+                        + "\nDeadline format: deadline <desc> /by <when>");
             }
             return new AddDeadlineCommand(collapseSpaces(desc), by);
         }
@@ -89,21 +89,21 @@ public final class Parser {
         case "event": {
             if (tail.isBlank()) {
                 throw new YinException("Please feed me some proper input..."
-                        + "\n    Event format: event <desc> /from <start> /to <end>");
+                        + "\nEvent format: event <desc> /from <start> /to <end>");
             }
             String body = tail.trim();
             int fromPosition = body.indexOf("/from");
             int toPosition = body.indexOf("/to", fromPosition + 5);
             if (fromPosition == -1 || toPosition == -1 || toPosition < fromPosition + 5) {
                 throw new YinException("Please feed me a proper input man..."
-                        + "\n    Event format: event <desc> /from <start> /to <end>");
+                        + "\nEvent format: event <desc> /from <start> /to <end>");
             }
             String desc = body.substring(0, fromPosition).trim();
             String from = body.substring(fromPosition + 5, toPosition).trim();
             String to = body.substring(toPosition + 3).trim();
             if (desc.isEmpty() || from.isEmpty() || to.isEmpty()) {
                 throw new YinException("Please feed me some proper input man..."
-                        + "\n    Event format: event <desc> /from <start> /to <end>");
+                        + "\nEvent format: event <desc> /from <start> /to <end>");
             }
             return new AddEventCommand(collapseSpaces(desc), from, to);
         }
@@ -163,13 +163,13 @@ public final class Parser {
                 return new ArchiveCommand(ArchiveCommand.Scope.DONE);
             default:
                 throw new YinException("Unknown archive scope: " + arg
-                        + "\n    Use: \"archive all\" or \"archive done\"");
+                        + "\nUse: \"archive all\" or \"archive done\"");
             }
         }
 
         default:
             return new UnknownCommand("Give me a command first >:("
-                    + "\n    Try: todo, deadline, event, list, mark, unmark, delete or bye.");
+                    + "\nTry: todo, deadline, event, list, mark, unmark, delete or bye.");
         }
     }
 }

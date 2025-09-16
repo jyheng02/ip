@@ -65,7 +65,7 @@ public class AddEventCommand extends Command {
         boolean badTo = (toRaw == null) || toRaw.isBlank();
         if (badDescription || badFrom || badTo) {
             throw new YinException("Please feed me a proper input man..."
-                    + "\n    Event format: event <desc> /from <start> /to <end>");
+                    + "\nEvent format: event <desc> /from <start> /to <end>");
         }
     }
 
@@ -82,7 +82,7 @@ public class AddEventCommand extends Command {
             return DateTimes.parseFlexible(raw);
         } catch (Exception e) {
             throw new YinException("I couldn't parse the " + which + " date/time :("
-                    + "\n    Try formats like 2019-10-15 or 2/12/2019 1800.");
+                    + "\nTry formats like 2019-10-15 or 2/12/2019 1800.");
         }
     }
 
