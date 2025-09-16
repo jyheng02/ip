@@ -13,6 +13,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+
 
 /**
  * A dialog box consisting of an image to represent the speaker
@@ -45,6 +47,10 @@ public class DialogBox extends HBox {
 
         dialog.setText(text);
         displayPicture.setImage(img);
+        javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(40, 40);
+        clip.setArcWidth(12);
+        clip.setArcHeight(12);
+        displayPicture.setClip(clip);
     }
 
     /**
@@ -55,7 +61,7 @@ public class DialogBox extends HBox {
         ObservableList<Node> tmp = FXCollections.observableArrayList(this.getChildren());
         Collections.reverse(tmp);
         getChildren().setAll(tmp);
-        setAlignment(Pos.TOP_LEFT);
+        setAlignment(Pos.BOTTOM_LEFT);
 
         dialog.getStyleClass().add("reply-label");
     }
@@ -68,7 +74,9 @@ public class DialogBox extends HBox {
      * @return DialogBox for user
      */
     public static DialogBox getUserDialog(String text, Image img) {
-        return new DialogBox(text, img);
+        var db = new DialogBox(text, img);
+        db.dialog.getStyleClass().add("user-label");
+        return db;
     }
 
     /**
@@ -82,6 +90,35 @@ public class DialogBox extends HBox {
     public static DialogBox getYinDialog(String text, Image img) {
         var db = new DialogBox(text, img);
         db.flip();
+        db.dialog.getStyleClass().add("reply-label");
         return db;
+    }
+
+    /**
+     * Creates a dialog box styled for error messages.
+     * The bubble is flipped and assigned error-specific CSS classes.
+     *
+     * @param text error message text
+     * @param img image to display alongside the bubble
+     * @return a styled error dialog box
+     */
+    public static DialogBox getErrorDialog(String text, Image img) {
+        var db = new DialogBox(text, img);
+        db.flip();
+        db.dialog.getStyleClass().addAll("reply-label", "error-label");
+        return db;
+    }
+
+    /**
+     * Binds the width of the dialog bubble to the given container,
+     * leaving a fixed amount of side padding. Ensures text wraps
+     * instead of overflowing.
+     *
+     * @param container the container whose width to track
+     * @param sidePadding space to leave for avatar and margins
+     */
+    public void bindBubbleWidthTo(Region container, double sidePadding) {
+        dialog.setWrapText(true);
+        dialog.maxWidthProperty().bind(container.widthProperty().subtract(sidePadding));
     }
 }

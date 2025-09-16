@@ -55,7 +55,7 @@ public class AddDeadlineCommand extends Command {
         boolean missingBy = (byRaw == null) || byRaw.isBlank();
         if (missingDescription || missingBy) {
             throw new YinException("Give me a proper input please..."
-                    + "\n    Deadline format: deadline <desc> /by <when>");
+                    + "\nDeadline format: deadline <desc> /by <when>");
         }
     }
 
@@ -71,7 +71,7 @@ public class AddDeadlineCommand extends Command {
             return DateTimes.parseFlexible(raw);
         } catch (Exception e) {
             throw new YinException("I couldn't parse the date/time :("
-                    + "\n    Try formats like 2019-10-15 or 2/12/2019 1800.");
+                    + "\nTry formats like 2019-10-15 or 2/12/2019 1800.");
         }
     }
 

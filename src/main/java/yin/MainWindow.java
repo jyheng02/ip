@@ -32,15 +32,35 @@ public class MainWindow {
     private final Image yinImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
 
     /**
-     * Initialises the main window.
-     * Ensures the scroll pane automatically moves to the bottom
-     * whenever the dialog container grows.
+     * Initialises the main window after FXML is loaded.
+     * Configures scroll and wrapping behaviour.
+     * Scrolls to the bottom when new content is added.
+     * Keeps dialog bubbles constrained to readable widths.
      */
     @FXML
     public void initialize() {
-        // Auto-scroll to the bottom when new dialog is added
-        scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+        scrollPane.setFitToWidth(true);
+        dialogContainer.setFillWidth(true);
+        dialogContainer.heightProperty().addListener((
+                obs, oldH, newH) -> {
+            if (newH.doubleValue() > oldH.doubleValue()) {
+                scrollPane.setVvalue(1.0);
+            }
+        });
+        dialogContainer.widthProperty().addListener((
+                obs, oldW, newW) -> {
+            double max = newW.doubleValue() - 100;
+            dialogContainer.getChildren().forEach(node -> {
+                if (node instanceof javafx.scene.layout.HBox h) {
+                    h.getChildren().stream()
+                            .filter(n -> n instanceof javafx.scene.control.Label)
+                            .map(n -> (javafx.scene.control.Label) n)
+                            .forEach(lbl -> lbl.setMaxWidth(max));
+                }
+            });
+        });
     }
+
 
     /**
      * Links the backend logic to this window.
@@ -51,17 +71,16 @@ public class MainWindow {
     public void setAppCore(AppCore appCore) {
         this.appCore = appCore;
         String hello = appCore.getWelcome();
-        dialogContainer.getChildren().add(
-                DialogBox.getYinDialog(hello, yinImage)
-        );
+        var helloDb = DialogBox.getYinDialog(hello, yinImage);
+        helloDb.bindBubbleWidthTo(dialogContainer, 140);
+        dialogContainer.getChildren().add(helloDb);
     }
 
     /**
      * Handles user input from the text field or send button.
-     * Creates a dialog box for the user’s message and another for Yin’s reply,
-     * then clears the input field.
-     * If the user exits, the application closes after a short delay
-     * so the goodbye message remains visible.
+     * Creates dialog bubbles for the user’s input and Yin’s response,
+     * applies error styling if needed, and clears the text field.
+     * Exits the app after a short delay if the exit command was given.
      */
     @FXML
     private void handleUserInput() {
@@ -71,10 +90,18 @@ public class MainWindow {
         }
 
         String response = appCore.getResponse(input);
-        dialogContainer.getChildren().addAll(
-                DialogBox.getUserDialog(input, userImage),
-                DialogBox.getYinDialog(response, yinImage)
-        );
+        boolean isError = response.startsWith("ERROR:");
+        String clean = isError ? response.substring("ERROR:".length()).trim() : response;
+
+        var userDb = DialogBox.getUserDialog(input, userImage);
+        userDb.bindBubbleWidthTo(dialogContainer, 180);
+
+        var yinDb = isError
+                ? DialogBox.getErrorDialog(clean, yinImage)
+                : DialogBox.getYinDialog(clean, yinImage);
+        yinDb.bindBubbleWidthTo(dialogContainer, 180);
+
+        dialogContainer.getChildren().addAll(userDb, yinDb);
         userInput.clear();
 
         if (appCore.hasExited()) {

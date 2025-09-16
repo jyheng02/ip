@@ -1,26 +1,38 @@
 .root {
-    main-color: rgb(237, 255, 242);       /* Create a looked-up color called "main-color" within root. */
+    main-color: #2f3e46;       /* Create a looked-up color called "main-color" within root. */
     -fx-background-color: main-color;
+    -fx-font-family: "Segoe UI", "Inter", "Arial";
+    -fx-font-size: 14px;
 }
 
 .text-field {
-    -fx-background-color: #d9ffe2;
-    -fx-font: 20px "Arial";
+    -fx-background-color: #354f52;
+    -fx-text-fill: white;
+
+    -fx-prompt-text-fill: rgba(255,255,255,0.55);
+    -fx-background-insets: 0;
+    -fx-background-radius: 10;
+    -fx-padding: 8 10 8 10;
 }
 
 .button {
-    -fx-background-color: mediumspringgreen;
+    -fx-background-color: #52796f;
+    -fx-text-fill: white;
     -fx-font: italic bold 16px "Arial";
+    -fx-font-weight: 700;
+    -fx-background-radius: 10;
+    -fx-padding: 8 16 8 16;
+    -fx-cursor: hand;
 }
 
 .button:hover {
-    -fx-background-color:cyan;
+    -fx-background-color:#6b8f86;
     -fx-font-size: 18px;
 }
 
 .button:pressed {
-    -fx-background-color:orange;
-    -fx-font-size: 20px;
+    -fx-background-color: #84a98c;
+    -fx-text-fill: #1b2a2f;
 }
 
 .scroll-pane,
@@ -30,12 +42,12 @@
 
 .scroll-bar {
     -fx-font-size: 10px;  /* Change width of scroll bar. */
-    -fx-background-color: main-color;
+    -fx-background-color: #2f3e46;
 }
 
 .scroll-bar .thumb {
-    -fx-background-color: #ff9cb4;
-    -fx-background-radius: 1em;
+    -fx-background-color: #6c757d;
+    -fx-background-radius: 999;
 }
 
 /* Hides the increment and decrement buttons. */
