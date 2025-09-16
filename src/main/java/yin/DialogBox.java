@@ -74,6 +74,7 @@ public class DialogBox extends HBox {
      * @return DialogBox for user
      */
     public static DialogBox getUserDialog(String text, Image img) {
+        // Solution adapted with assistance from ChatGPT (openAI)
         var db = new DialogBox(text, img);
         db.dialog.getStyleClass().add("user-label");
         return db;
@@ -90,6 +91,7 @@ public class DialogBox extends HBox {
     public static DialogBox getYinDialog(String text, Image img) {
         var db = new DialogBox(text, img);
         db.flip();
+        // Solution adapted with assistance from ChatGPT (openAI)
         db.dialog.getStyleClass().add("reply-label");
         return db;
     }
@@ -102,6 +104,7 @@ public class DialogBox extends HBox {
      * @param img image to display alongside the bubble
      * @return a styled error dialog box
      */
+    // Solution adapted with assistance from ChatGPT (openAI)
     public static DialogBox getErrorDialog(String text, Image img) {
         var db = new DialogBox(text, img);
         db.flip();
@@ -117,6 +120,7 @@ public class DialogBox extends HBox {
      * @param container the container whose width to track
      * @param sidePadding space to leave for avatar and margins
      */
+    // Solution adapted with assistance from ChatGPT (openAI)
     public void bindBubbleWidthTo(Region container, double sidePadding) {
         dialog.setWrapText(true);
         dialog.maxWidthProperty().bind(container.widthProperty().subtract(sidePadding));

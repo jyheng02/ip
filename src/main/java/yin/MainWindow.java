@@ -37,6 +37,7 @@ public class MainWindow {
      * Scrolls to the bottom when new content is added.
      * Keeps dialog bubbles constrained to readable widths.
      */
+    // Solution adapted with assistance from ChatGPT (openAI)
     @FXML
     public void initialize() {
         scrollPane.setFitToWidth(true);
@@ -88,7 +89,7 @@ public class MainWindow {
         if (input == null || input.isBlank()) {
             return;
         }
-
+        // Solution to integrate error bubble adapted with assistance from ChatGPT (openAI)
         String response = appCore.getResponse(input);
         boolean isError = response.startsWith("ERROR:");
         String clean = isError ? response.substring("ERROR:".length()).trim() : response;
